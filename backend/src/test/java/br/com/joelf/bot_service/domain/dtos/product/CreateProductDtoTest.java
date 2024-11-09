@@ -8,19 +8,19 @@ public class CreateProductDtoTest {
 
      @Test
      public void testCreateProductDtoBuilder() {
-         CreateProductDto createProductDto = new CreateProductDto("name", ProductStatus.DISPONIVEL);
+         CreateProductDto dto = new CreateProductDto("name", ProductStatus.DISPONIVEL);
 
-         Assertions.assertEquals("name", createProductDto.getName());
-         Assertions.assertEquals(ProductStatus.DISPONIVEL, createProductDto.getStatus());
+         Assertions.assertEquals("name", dto.getName());
+         Assertions.assertEquals(ProductStatus.DISPONIVEL, dto.getStatus());
      }
 
      @Test
-        public void testCreateProductDtoSetters() {
-            CreateProductDto createProductDto = new CreateProductDto();
-            createProductDto.setName("name");
-            createProductDto.setStatus(ProductStatus.DISPONIVEL);
+     public void testCreateProductDtoSetters() {
+         CreateProductDto dto = new CreateProductDto();
+         dto.setName("name");
+         dto.setStatus(ProductStatus.DISPONIVEL);
 
-            Assertions.assertEquals("name", createProductDto.getName());
-            Assertions.assertEquals(ProductStatus.DISPONIVEL, createProductDto.getStatus());
-        }
+         Assertions.assertEquals("name", dto.getName());
+         Assertions.assertEquals(ProductStatus.DISPONIVEL, dto.getStatus());
+     }
 }
