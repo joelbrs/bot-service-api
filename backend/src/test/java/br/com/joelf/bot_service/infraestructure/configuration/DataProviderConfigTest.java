@@ -1,8 +1,11 @@
 package br.com.joelf.bot_service.infraestructure.configuration;
 
 import br.com.joelf.bot_service.application.dataprovider.ProductDataProvider;
+import br.com.joelf.bot_service.application.dataprovider.TemplateDataProvider;
 import br.com.joelf.bot_service.infraestructure.dataprovider.ProductDataProviderImpl;
+import br.com.joelf.bot_service.infraestructure.dataprovider.TemplateDataProviderImpl;
 import br.com.joelf.bot_service.infraestructure.repositories.postgres.PgProductRepository;
+import br.com.joelf.bot_service.infraestructure.repositories.postgres.PgTemplateRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +22,9 @@ class DataProviderConfigTest {
 
     @Mock
     private PgProductRepository pgProductRepository;
+
+    @Mock
+    private PgTemplateRepository pgTemplateRepository;
 
     private DataProviderConfig dataProviderConfig;
 
@@ -37,6 +43,19 @@ class DataProviderConfigTest {
                 ProductDataProviderImpl.class,
                 dataprovider,
                 "ProductDataProvider should be an instance of ProductDataProviderImpl"
+        );
+    }
+
+    @Test
+    void shouldReturnCorrectTemplateDataProvider() {
+        TemplateDataProvider dataprovider =
+                dataProviderConfig.templateDataProvider(modelMapper, pgTemplateRepository);
+
+        Assertions.assertNotNull(dataprovider, "TemplateDataProvider should not be null");
+        Assertions.assertInstanceOf(
+                TemplateDataProviderImpl.class,
+                dataprovider,
+                "TemplateDataProvider should be an instance of TemplateDataProviderImpl"
         );
     }
 }

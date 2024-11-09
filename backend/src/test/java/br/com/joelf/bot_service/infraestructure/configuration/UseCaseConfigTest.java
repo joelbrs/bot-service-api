@@ -1,11 +1,9 @@
 package br.com.joelf.bot_service.infraestructure.configuration;
 
 import br.com.joelf.bot_service.application.dataprovider.ProductDataProvider;
+import br.com.joelf.bot_service.application.dataprovider.TemplateDataProvider;
 import br.com.joelf.bot_service.application.usecase.*;
-import br.com.joelf.bot_service.domain.usecase.CreateProductUseCase;
-import br.com.joelf.bot_service.domain.usecase.DeleteProductUseCase;
-import br.com.joelf.bot_service.domain.usecase.FindAllProductUseCase;
-import br.com.joelf.bot_service.domain.usecase.UpdateProductUseCase;
+import br.com.joelf.bot_service.domain.usecase.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +16,9 @@ public class UseCaseConfigTest {
 
     @Mock
     private ProductDataProvider productDataProvider;
+
+    @Mock
+    private TemplateDataProvider templateDataProvider;
 
     private UseCaseConfig useCaseConfig;
 
@@ -71,6 +72,18 @@ public class UseCaseConfigTest {
             FindAllProductUseCaseImpl.class,
             useCase,
             "FindAllPagedUseCase should be an instance of FindAllPagedUseCaseImpl"
+        );
+    }
+
+    @Test
+    void shouldReturnCorrectCreateTemplateUseCase() {
+        CreateTemplateUseCase useCase = useCaseConfig.createTemplateUseCase(templateDataProvider);
+
+        Assertions.assertNotNull(useCase, "CreateTemplateUseCase should not be null");
+        Assertions.assertInstanceOf(
+            CreateTemplateUseCaseImpl.class,
+            useCase,
+            "CreateTemplateUseCase should be an instance of CreateTemplateUseCaseImpl"
         );
     }
 }
