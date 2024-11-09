@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -22,8 +23,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.UUID;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProductDataProviderImplTest {
@@ -108,6 +108,36 @@ class ProductDataProviderImplTest {
         Assertions.assertNotNull(products, "Products should not be null");
         Assertions.assertEquals(1, products.getTotalElements(), "Should have 1 element");
         Assertions.assertNotNull(products.getContent(), "Products content should not be null");
-        Assertions.assertEquals(expectedProduct, products.getContent().get(0), "Should have 1 element");
+        Assertions.assertEquals(expectedProduct, products.getContent().getFirst(), "Should have 1 element");
+    }
+
+    @Test
+    void shouldDeleteProductCorrectly() {
+        UUID id = UUID.randomUUID();
+
+        when(pgProductRepository.existsById(id)).thenReturn(true);
+
+        productDataProviderImpl.delete(id);
+
+        Assertions.assertDoesNotThrow(() -> productDataProviderImpl.delete(id), "Should not throw any exception");
+    }
+
+    @Test
+    void shouldThrowProductDataProviderExceptionWhenProductNotFoundOnDelete() {
+        UUID id = UUID.randomUUID();
+
+        when(pgProductRepository.existsById(id)).thenReturn(false);
+
+        Assertions.assertThrows(ProductDataProviderException.class, () -> productDataProviderImpl.delete(id), "Should throw ProductDataProviderException");
+    }
+
+    @Test
+    void shouldThrowProductDataProviderExceptionWhenProductCannotBeDeleted() {
+        UUID id = UUID.randomUUID();
+
+        when(pgProductRepository.existsById(id)).thenReturn(true);
+        doThrow(new DataIntegrityViolationException("Data Integrity Violation")).when(pgProductRepository).deleteById(id);
+
+        Assertions.assertThrows(ProductDataProviderException.class, () -> productDataProviderImpl.delete(id), "Should throw ProductDataProviderException");
     }
 }
