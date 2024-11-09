@@ -5,17 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product {
+public class SubProduct<T extends Product> {
     private UUID id;
     private String name;
-    private ProductStatus status;
-    private List<SubProduct<Product>> products = new ArrayList<>();
+    private BigDecimal price;
+    private T product;
 }

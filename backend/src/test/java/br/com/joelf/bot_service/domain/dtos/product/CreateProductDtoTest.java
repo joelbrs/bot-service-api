@@ -4,11 +4,13 @@ import br.com.joelf.bot_service.domain.entities.ProductStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
+
 public class CreateProductDtoTest {
 
      @Test
      public void testCreateProductDtoBuilder() {
-         CreateProductDto dto = new CreateProductDto("name", ProductStatus.DISPONIVEL);
+         CreateProductDto dto = new CreateProductDto("name", ProductStatus.DISPONIVEL, Collections.emptyList());
 
          Assertions.assertEquals("name", dto.getName());
          Assertions.assertEquals(ProductStatus.DISPONIVEL, dto.getStatus());

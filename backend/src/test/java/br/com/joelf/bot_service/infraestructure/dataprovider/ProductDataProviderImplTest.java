@@ -5,6 +5,7 @@ import br.com.joelf.bot_service.domain.dtos.product.CreateProductDto;
 import br.com.joelf.bot_service.domain.dtos.product.UpdateProductDto;
 import br.com.joelf.bot_service.domain.entities.Product;
 import br.com.joelf.bot_service.domain.entities.ProductStatus;
+import br.com.joelf.bot_service.domain.entities.SubProduct;
 import br.com.joelf.bot_service.infraestructure.repositories.postgres.PgProductRepository;
 import br.com.joelf.bot_service.infraestructure.repositories.postgres.domain.PgProduct;
 import jakarta.persistence.EntityNotFoundException;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,7 +41,7 @@ class ProductDataProviderImplTest {
 
     @Test
     void shouldCreateProductCorrectly() {
-        CreateProductDto dto = new CreateProductDto("name", ProductStatus.DISPONIVEL);
+        CreateProductDto dto = new CreateProductDto("name", ProductStatus.DISPONIVEL, Collections.emptyList());
 
         UUID generatedId = UUID.randomUUID();
 
@@ -50,7 +52,9 @@ class ProductDataProviderImplTest {
         mappedPgProduct.setId(generatedId);
 
         Product expectedProduct =
-                new Product(mappedPgProduct.getId(), mappedPgProduct.getName(), mappedPgProduct.getStatus());
+                new Product(
+                        mappedPgProduct.getId(), mappedPgProduct.getName(), mappedPgProduct.getStatus(), Collections.emptyList()
+                );
 
         when(modelMapper.map(dto, PgProduct.class)).thenReturn(mappedPgProduct);
         when(pgProductRepository.save(mappedPgProduct)).thenReturn(mappedPgProduct);
@@ -65,14 +69,14 @@ class ProductDataProviderImplTest {
     @Test
     void shouldUpdateProductCorrectly() {
         UUID id = UUID.randomUUID();
-        UpdateProductDto dto = new UpdateProductDto("name", ProductStatus.DISPONIVEL);
+        UpdateProductDto dto = new UpdateProductDto("name", ProductStatus.DISPONIVEL, Collections.emptyList());
 
         PgProduct pgProduct = new PgProduct();
         pgProduct.setId(id);
 
         when(pgProductRepository.getReferenceById(id)).thenReturn(pgProduct);
 
-        Product expectedProduct = new Product(id, dto.getName(), dto.getStatus());
+        Product expectedProduct = new Product(id, dto.getName(), dto.getStatus(), Collections.emptyList());
 
         when(pgProductRepository.save(pgProduct)).thenReturn(pgProduct);
         when(modelMapper.map(pgProduct, Product.class)).thenReturn(expectedProduct);
@@ -86,7 +90,7 @@ class ProductDataProviderImplTest {
     @Test
     void shouldThrowProductDataProviderExceptionWhenProductNotFound() {
         UUID id = UUID.randomUUID();
-        UpdateProductDto dto = new UpdateProductDto("name", ProductStatus.DISPONIVEL);
+        UpdateProductDto dto = new UpdateProductDto("name", ProductStatus.DISPONIVEL, Collections.emptyList());
 
         when(pgProductRepository.getReferenceById(id)).thenThrow(new EntityNotFoundException());
 
