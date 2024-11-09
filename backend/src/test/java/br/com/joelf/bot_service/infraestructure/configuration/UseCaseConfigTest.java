@@ -86,4 +86,16 @@ public class UseCaseConfigTest {
             "CreateTemplateUseCase should be an instance of CreateTemplateUseCaseImpl"
         );
     }
+
+    @Test
+    void shouldReturnCorrectUpdateTemplateUseCase() {
+        UpdateTemplateUseCase useCase = useCaseConfig.updateTemplateUseCase(templateDataProvider);
+
+        Assertions.assertNotNull(useCase, "UpdateTemplateUseCase should not be null");
+        Assertions.assertInstanceOf(
+            UpdateTemplateUseCaseImpl.class,
+            useCase,
+            "UpdateTemplateUseCase should be an instance of UpdateTemplateUseCaseImpl"
+        );
+    }
 }
