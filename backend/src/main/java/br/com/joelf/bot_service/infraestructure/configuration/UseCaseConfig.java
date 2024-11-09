@@ -1,6 +1,7 @@
 package br.com.joelf.bot_service.infraestructure.configuration;
 
 import br.com.joelf.bot_service.application.dataprovider.ProductDataProvider;
+import br.com.joelf.bot_service.application.dataprovider.SubProductDataProvider;
 import br.com.joelf.bot_service.application.dataprovider.TemplateDataProvider;
 import br.com.joelf.bot_service.application.usecase.*;
 import br.com.joelf.bot_service.domain.usecase.*;
@@ -12,16 +13,18 @@ public class UseCaseConfig {
 
     @Bean
     public CreateProductUseCase createProductUseCase(
-            ProductDataProvider productDataProvider
+            ProductDataProvider productDataProvider,
+            SubProductDataProvider subProductDataProvider
     ) {
-        return new CreateProductUseCaseImpl(productDataProvider);
+        return new CreateProductUseCaseImpl(productDataProvider, subProductDataProvider);
     }
 
     @Bean
     public UpdateProductUseCase updateProductUseCase(
-            ProductDataProvider productDataProvider
+            ProductDataProvider productDataProvider,
+            SubProductDataProvider subProductDataProvider
     ) {
-        return new UpdateProductUseCaseImpl(productDataProvider);
+        return new UpdateProductUseCaseImpl(productDataProvider, subProductDataProvider);
     }
 
     @Bean

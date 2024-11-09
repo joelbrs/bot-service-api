@@ -1,5 +1,6 @@
 package br.com.joelf.bot_service.domain.dtos.product;
 
+import br.com.joelf.bot_service.domain.entities.Product;
 import br.com.joelf.bot_service.domain.entities.ProductStatus;
 import br.com.joelf.bot_service.domain.entities.SubProduct;
 import jakarta.validation.constraints.NotBlank;
@@ -23,5 +24,5 @@ public class UpdateProductDto {
     private ProductStatus status;
 
     @NotNull
-    private List<SubProduct> products;
+    private List<SubProduct<Product>> products;
 }
