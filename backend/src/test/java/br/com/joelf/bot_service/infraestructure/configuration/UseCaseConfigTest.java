@@ -1,10 +1,7 @@
 package br.com.joelf.bot_service.infraestructure.configuration;
 
 import br.com.joelf.bot_service.application.dataprovider.ProductDataProvider;
-import br.com.joelf.bot_service.application.usecase.CreateProductUseCaseImpl;
-import br.com.joelf.bot_service.application.usecase.DeleteProductUseCaseImplTest;
-import br.com.joelf.bot_service.application.usecase.FindAllProductUseCaseImpl;
-import br.com.joelf.bot_service.application.usecase.UpdateProductUseCaseImpl;
+import br.com.joelf.bot_service.application.usecase.*;
 import br.com.joelf.bot_service.domain.usecase.CreateProductUseCase;
 import br.com.joelf.bot_service.domain.usecase.DeleteProductUseCase;
 import br.com.joelf.bot_service.domain.usecase.FindAllProductUseCase;
@@ -59,7 +56,7 @@ public class UseCaseConfigTest {
 
         Assertions.assertNotNull(useCase, "ProductDataProvider should not be null");
         Assertions.assertInstanceOf(
-            DeleteProductUseCaseImplTest.class,
+            DeleteProductUseCaseImpl.class,
             useCase,
             "ProductDataProvider should be an instance of ProductDataProviderImpl"
         );
