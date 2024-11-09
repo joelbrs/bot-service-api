@@ -33,7 +33,7 @@ public class ProductController {
             Pageable pageable,
             @RequestParam(required = false) String name,
             @RequestParam(required = false)ProductStatus status
-            ) {
+    ) {
         return ResponseEntity.ok(findAllProductUseCase.execute(pageable, name, status));
     }
 

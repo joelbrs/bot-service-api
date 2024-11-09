@@ -51,4 +51,11 @@ public class UseCaseConfig {
     ) {
         return new UpdateTemplateUseCaseImpl(templateDataProvider);
     }
+
+    @Bean
+    public FindAllTemplateUseCase findAllTemplateUseCase(
+            TemplateDataProvider templateDataProvider
+    ) {
+        return new FindAllTemplateUseCaseImpl(templateDataProvider);
+    }
 }

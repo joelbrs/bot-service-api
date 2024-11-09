@@ -11,6 +11,8 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.UUID;
 
@@ -36,5 +38,11 @@ public class TemplateDataProviderImpl implements TemplateDataProvider {
         } catch (EntityNotFoundException e) {
             throw new TemplateDataProviderException("Template not found, id: " + id);
         }
+    }
+
+    @Override
+    public Page<Template> findAll(Pageable pageable, String name) {
+        Page<PgTemplate> pgTemplates = pgTemplateRepository.findAllPaged(pageable, name);
+        return pgTemplates.map(pgTemplate -> modelMapper.map(pgTemplate, Template.class));
     }
 }
