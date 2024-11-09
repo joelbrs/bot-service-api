@@ -1,6 +1,7 @@
 package br.com.joelf.bot_service.infraestructure.configuration;
 
 import br.com.joelf.bot_service.application.dataprovider.ProductDataProvider;
+import br.com.joelf.bot_service.application.dataprovider.SubProductDataProvider;
 import br.com.joelf.bot_service.application.dataprovider.TemplateDataProvider;
 import br.com.joelf.bot_service.application.usecase.*;
 import br.com.joelf.bot_service.domain.usecase.*;
@@ -20,6 +21,9 @@ public class UseCaseConfigTest {
     @Mock
     private TemplateDataProvider templateDataProvider;
 
+    @Mock
+    private SubProductDataProvider subProductDataProvider;
+
     private UseCaseConfig useCaseConfig;
 
     @BeforeEach
@@ -29,7 +33,7 @@ public class UseCaseConfigTest {
 
     @Test
     void shouldReturnCorrectUpdateProductUseCase() {
-        UpdateProductUseCase useCase = useCaseConfig.updateProductUseCase(productDataProvider);
+        UpdateProductUseCase useCase = useCaseConfig.updateProductUseCase(productDataProvider, subProductDataProvider);
 
         Assertions.assertNotNull(useCase, "UpdateProductUseCase should not be null");
         Assertions.assertInstanceOf(
@@ -41,7 +45,7 @@ public class UseCaseConfigTest {
 
     @Test
     void shouldReturnCorrectCreateProductUseCase() {
-        CreateProductUseCase useCase = useCaseConfig.createProductUseCase(productDataProvider);
+        CreateProductUseCase useCase = useCaseConfig.createProductUseCase(productDataProvider, subProductDataProvider);
 
         Assertions.assertNotNull(useCase, "CreateProductUseCase should not be null");
         Assertions.assertInstanceOf(

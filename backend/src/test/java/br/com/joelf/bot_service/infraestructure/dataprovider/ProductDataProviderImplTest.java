@@ -53,7 +53,7 @@ class ProductDataProviderImplTest {
 
         Product expectedProduct =
                 new Product(
-                        mappedPgProduct.getId(), mappedPgProduct.getName(), mappedPgProduct.getStatus(), Collections.emptyList()
+                        mappedPgProduct.getId(), mappedPgProduct.getName(), mappedPgProduct.getStatus()
                 );
 
         when(modelMapper.map(dto, PgProduct.class)).thenReturn(mappedPgProduct);
@@ -76,7 +76,7 @@ class ProductDataProviderImplTest {
 
         when(pgProductRepository.getReferenceById(id)).thenReturn(pgProduct);
 
-        Product expectedProduct = new Product(id, dto.getName(), dto.getStatus(), Collections.emptyList());
+        Product expectedProduct = new Product(id, dto.getName(), dto.getStatus());
 
         when(pgProductRepository.save(pgProduct)).thenReturn(pgProduct);
         when(modelMapper.map(pgProduct, Product.class)).thenReturn(expectedProduct);
