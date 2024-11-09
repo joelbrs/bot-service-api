@@ -4,6 +4,7 @@ import br.com.joelf.bot_service.domain.dtos.template.CreateTemplateDto;
 import br.com.joelf.bot_service.domain.dtos.template.UpdateTemplateDto;
 import br.com.joelf.bot_service.domain.entities.Template;
 import br.com.joelf.bot_service.domain.usecase.CreateTemplateUseCase;
+import br.com.joelf.bot_service.domain.usecase.DeleteTemplateUseCase;
 import br.com.joelf.bot_service.domain.usecase.FindAllTemplateUseCase;
 import br.com.joelf.bot_service.domain.usecase.UpdateTemplateUseCase;
 import jakarta.validation.Valid;
@@ -24,6 +25,7 @@ public class TemplateController {
     private final CreateTemplateUseCase createTemplateUseCase;
     private final UpdateTemplateUseCase updateTemplateUseCase;
     private final FindAllTemplateUseCase findAllTemplateUseCase;
+    private final DeleteTemplateUseCase deleteTemplateUseCase;
 
     @GetMapping
     public ResponseEntity<Page<Template>> findAll(
@@ -41,5 +43,11 @@ public class TemplateController {
     @PutMapping("/{id}")
     public ResponseEntity<Template> update(@PathVariable UUID id, @RequestBody @Valid UpdateTemplateDto template) {
         return ResponseEntity.ok(updateTemplateUseCase.execute(id, template));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+        deleteTemplateUseCase.execute(id);
+        return ResponseEntity.noContent().build();
     }
 }

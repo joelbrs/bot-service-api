@@ -45,4 +45,17 @@ public class TemplateDataProviderImpl implements TemplateDataProvider {
         Page<PgTemplate> pgTemplates = pgTemplateRepository.findAllPaged(pageable, name);
         return pgTemplates.map(pgTemplate -> modelMapper.map(pgTemplate, Template.class));
     }
+
+    @Override
+    public void delete(UUID id) {
+        if (!pgTemplateRepository.existsById(id)) {
+            throw new TemplateDataProviderException("Template not found, id: " + id);
+        }
+
+        try {
+            pgTemplateRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new TemplateDataProviderException("Error deleting template, id: " + id);
+        }
+    }
 }

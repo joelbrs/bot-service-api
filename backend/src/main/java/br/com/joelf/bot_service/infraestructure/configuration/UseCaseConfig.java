@@ -58,4 +58,11 @@ public class UseCaseConfig {
     ) {
         return new FindAllTemplateUseCaseImpl(templateDataProvider);
     }
+
+    @Bean
+    public DeleteTemplateUseCase deleteTemplateUseCase(
+            TemplateDataProvider templateDataProvider
+    ) {
+        return new DeleteTemplateUseCaseImpl(templateDataProvider);
+    }
 }

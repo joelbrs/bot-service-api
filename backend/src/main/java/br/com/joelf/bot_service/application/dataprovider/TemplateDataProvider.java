@@ -12,4 +12,5 @@ public interface TemplateDataProvider {
     Template create(CreateTemplateDto template);
     Template update(UUID id, UpdateTemplateDto template);
     Page<Template> findAll(Pageable pageable, String name);
+    void delete(UUID id);
 }
