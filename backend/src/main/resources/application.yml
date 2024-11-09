@@ -3,3 +3,7 @@ spring:
         name: bot-service
     profiles:
         active: "@spring.profiles.active@"
+
+server:
+    servlet:
+        context-path: /bot-service
