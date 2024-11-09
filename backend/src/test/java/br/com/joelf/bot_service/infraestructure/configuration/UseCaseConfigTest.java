@@ -110,4 +110,16 @@ public class UseCaseConfigTest {
             "FindAllTemplateUseCase should be an instance of FindAllTemplateUseCaseImpl"
         );
     }
+
+    @Test
+    void shouldReturnCorrectDeleteTemplateUseCase() {
+        DeleteTemplateUseCase useCase = useCaseConfig.deleteTemplateUseCase(templateDataProvider);
+
+        Assertions.assertNotNull(useCase, "DeleteTemplateUseCase should not be null");
+        Assertions.assertInstanceOf(
+            DeleteTemplateUseCaseImpl.class,
+            useCase,
+            "DeleteTemplateUseCase should be an instance of DeleteTemplateUseCaseImpl"
+        );
+    }
 }

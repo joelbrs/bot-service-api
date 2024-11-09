@@ -16,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -23,8 +24,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.UUID;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class TemplateDataProviderImplTest {
@@ -112,5 +112,35 @@ class TemplateDataProviderImplTest {
         Assertions.assertEquals(1, templates.getTotalElements(), "Should have 1 element");
         Assertions.assertNotNull(templates.getContent(), "Templates content should not be null");
         Assertions.assertEquals(expectedTemplate, templates.getContent().getFirst(), "Should have 1 element");
+    }
+
+    @Test
+    void shouldDeleteTemplateCorrectly() {
+        UUID id = UUID.randomUUID();
+
+        when(pgTemplateRepository.existsById(id)).thenReturn(true);
+
+        templateDataProvider.delete(id);
+
+        Assertions.assertDoesNotThrow(() -> templateDataProvider.delete(id));
+    }
+
+    @Test
+    void shouldThrowsDataProviderExceptionWhenTemplateNotFound() {
+        UUID id = UUID.randomUUID();
+
+        when(pgTemplateRepository.existsById(id)).thenReturn(false);
+
+        Assertions.assertThrows(TemplateDataProviderException.class, () -> templateDataProvider.delete(id));
+    }
+
+    @Test
+    void shouldThrowsDataProviderExceptionWhenTemplateCannotBeDeleted() {
+        UUID id = UUID.randomUUID();
+
+        when(pgTemplateRepository.existsById(id)).thenReturn(true);
+        doThrow(new DataIntegrityViolationException("Error")).when(pgTemplateRepository).deleteById(id);
+
+        Assertions.assertThrows(TemplateDataProviderException.class, () -> templateDataProvider.delete(id));
     }
 }

@@ -6,6 +6,7 @@ import br.com.joelf.bot_service.domain.dtos.template.UpdateTemplateDto;
 import br.com.joelf.bot_service.domain.entities.Product;
 import br.com.joelf.bot_service.domain.entities.Template;
 import br.com.joelf.bot_service.domain.usecase.CreateTemplateUseCase;
+import br.com.joelf.bot_service.domain.usecase.DeleteTemplateUseCase;
 import br.com.joelf.bot_service.domain.usecase.FindAllTemplateUseCase;
 import br.com.joelf.bot_service.domain.usecase.UpdateTemplateUseCase;
 import org.junit.jupiter.api.Assertions;
@@ -37,6 +38,9 @@ public class TemplateControllerTest {
 
     @Mock
     private FindAllTemplateUseCase findAllTemplateUseCase;
+
+    @Mock
+    private DeleteTemplateUseCase deleteTemplateUseCase;
 
     @InjectMocks
     private TemplateController templateController;
@@ -83,5 +87,14 @@ public class TemplateControllerTest {
         Assertions.assertNotNull(result.getBody(), "Body should not be null");
         Assertions.assertEquals(List.of(template), result.getBody().toList(), "Body should contain the template");
         Assertions.assertEquals(HttpStatus.OK, result.getStatusCode(), "Status code should be OK");
+    }
+
+    @Test
+    void shouldDeleteTemplateOnSuccess() {
+        UUID id = UUID.randomUUID();
+
+        templateController.delete(id);
+
+        Assertions.assertDoesNotThrow(() -> deleteTemplateUseCase.execute(id));
     }
 }
