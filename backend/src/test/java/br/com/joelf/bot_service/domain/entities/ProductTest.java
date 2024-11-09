@@ -1,4 +1,4 @@
-package br.com.joelf.bot_service.domain.dtos.entities;
+package br.com.joelf.bot_service.domain.entities;
 
 import br.com.joelf.bot_service.domain.entities.Product;
 import br.com.joelf.bot_service.domain.entities.ProductStatus;

@@ -1,6 +1,5 @@
-package br.com.joelf.bot_service.domain.dtos.entities;
+package br.com.joelf.bot_service.domain.entities;
 
-import br.com.joelf.bot_service.domain.entities.ProductStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
