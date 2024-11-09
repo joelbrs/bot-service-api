@@ -13,6 +13,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -45,6 +46,19 @@ public class ProductDataProviderImpl implements ProductDataProvider {
             return modelMapper.map(pgProductRepository.save(pgProduct), Product.class);
         } catch (EntityNotFoundException e) {
             throw new ProductDataProviderException("Product not found, id: " + id);
+        }
+    }
+
+    @Override
+    public void delete(UUID id) throws ProductDataProviderException {
+        if (!pgProductRepository.existsById(id)) {
+            throw new ProductDataProviderException("Product not found, id: " + id);
+        }
+
+        try {
+            pgProductRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new ProductDataProviderException("Product cannot be deleted, id: " + id);
         }
     }
 }
