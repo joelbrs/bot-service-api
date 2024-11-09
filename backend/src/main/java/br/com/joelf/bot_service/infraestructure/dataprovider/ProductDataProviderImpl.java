@@ -5,6 +5,7 @@ import br.com.joelf.bot_service.application.dataprovider.exceptions.ProductDataP
 import br.com.joelf.bot_service.domain.dtos.product.CreateProductDto;
 import br.com.joelf.bot_service.domain.dtos.product.UpdateProductDto;
 import br.com.joelf.bot_service.domain.entities.Product;
+import br.com.joelf.bot_service.domain.entities.ProductStatus;
 import br.com.joelf.bot_service.infraestructure.repositories.postgres.PgProductRepository;
 
 import br.com.joelf.bot_service.infraestructure.repositories.postgres.domain.PgProduct;
@@ -12,6 +13,8 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.UUID;
 
@@ -20,6 +23,12 @@ public class ProductDataProviderImpl implements ProductDataProvider {
 
     private final ModelMapper modelMapper;
     private final PgProductRepository pgProductRepository;
+
+    @Override
+    public Page<Product> findAllPaged(Pageable pageable, String name, ProductStatus status) {
+        Page<PgProduct> products = pgProductRepository.findAllPaged(pageable, name, status);
+        return products.map(pgProduct -> modelMapper.map(pgProduct, Product.class));
+    }
 
     @Override
     public Product create(CreateProductDto product) {
