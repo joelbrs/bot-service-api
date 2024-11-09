@@ -6,6 +6,7 @@ import br.com.joelf.bot_service.domain.dtos.template.UpdateTemplateDto;
 import br.com.joelf.bot_service.domain.entities.Product;
 import br.com.joelf.bot_service.domain.entities.Template;
 import br.com.joelf.bot_service.domain.usecase.CreateTemplateUseCase;
+import br.com.joelf.bot_service.domain.usecase.FindAllTemplateUseCase;
 import br.com.joelf.bot_service.domain.usecase.UpdateTemplateUseCase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,9 +14,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.Mockito.mock;
@@ -29,6 +34,9 @@ public class TemplateControllerTest {
 
     @Mock
     private UpdateTemplateUseCase updateTemplateUseCase;
+
+    @Mock
+    private FindAllTemplateUseCase findAllTemplateUseCase;
 
     @InjectMocks
     private TemplateController templateController;
@@ -59,6 +67,21 @@ public class TemplateControllerTest {
 
         Assertions.assertNotNull(result.getBody(), "Body should not be null");
         Assertions.assertEquals(template, result.getBody(), "Body should be the same as the template");
+        Assertions.assertEquals(HttpStatus.OK, result.getStatusCode(), "Status code should be OK");
+    }
+
+    @Test
+    void shouldFindAllTemplatesOnSuccess() {
+        Pageable pageable = mock(Pageable.class);
+        String name = "name";
+        Template template = mock(Template.class);
+
+        when(findAllTemplateUseCase.execute(pageable, name)).thenReturn(new PageImpl<>(List.of(template)));
+
+        ResponseEntity<Page<Template>> result = templateController.findAll(pageable, name);
+
+        Assertions.assertNotNull(result.getBody(), "Body should not be null");
+        Assertions.assertEquals(List.of(template), result.getBody().toList(), "Body should contain the template");
         Assertions.assertEquals(HttpStatus.OK, result.getStatusCode(), "Status code should be OK");
     }
 }

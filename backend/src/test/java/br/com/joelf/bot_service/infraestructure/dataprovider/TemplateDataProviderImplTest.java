@@ -3,8 +3,10 @@ package br.com.joelf.bot_service.infraestructure.dataprovider;
 import br.com.joelf.bot_service.application.dataprovider.exceptions.TemplateDataProviderException;
 import br.com.joelf.bot_service.domain.dtos.template.CreateTemplateDto;
 import br.com.joelf.bot_service.domain.dtos.template.UpdateTemplateDto;
+import br.com.joelf.bot_service.domain.entities.Product;
 import br.com.joelf.bot_service.domain.entities.Template;
 import br.com.joelf.bot_service.infraestructure.repositories.postgres.PgTemplateRepository;
+import br.com.joelf.bot_service.infraestructure.repositories.postgres.domain.PgProduct;
 import br.com.joelf.bot_service.infraestructure.repositories.postgres.domain.PgTemplate;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Assertions;
@@ -14,9 +16,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.UUID;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -87,5 +94,23 @@ class TemplateDataProviderImplTest {
         when(pgTemplateRepository.getReferenceById(id)).thenThrow(new EntityNotFoundException());
 
         Assertions.assertThrows(TemplateDataProviderException.class, () -> templateDataProvider.update(id, dto));
+    }
+
+    @Test
+    void shouldFindAllTemplatesOnSucces() {
+        Pageable pageable = mock(Pageable.class);
+
+        PgTemplate pgTemplate = new PgTemplate();
+        Template expectedTemplate = new Template();
+
+        when(pgTemplateRepository.findAllPaged(pageable, null)).thenReturn(new PageImpl<>(List.of(pgTemplate)));
+        when(modelMapper.map(pgTemplate, Template.class)).thenReturn(expectedTemplate);
+
+        Page<Template> templates = templateDataProvider.findAll(pageable, null);
+
+        Assertions.assertNotNull(templates, "Templates should not be null");
+        Assertions.assertEquals(1, templates.getTotalElements(), "Should have 1 element");
+        Assertions.assertNotNull(templates.getContent(), "Templates content should not be null");
+        Assertions.assertEquals(expectedTemplate, templates.getContent().getFirst(), "Should have 1 element");
     }
 }

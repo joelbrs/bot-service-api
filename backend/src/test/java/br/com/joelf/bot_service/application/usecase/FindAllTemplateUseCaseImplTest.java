@@ -1,6 +1,6 @@
 package br.com.joelf.bot_service.application.usecase;
 
-import br.com.joelf.bot_service.application.dataprovider.ProductDataProvider;
+import br.com.joelf.bot_service.application.dataprovider.TemplateDataProvider;
 import br.com.joelf.bot_service.domain.entities.ProductStatus;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,22 +13,21 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class FindAllProductUseCaseImplTest {
+public class FindAllTemplateUseCaseImplTest {
 
     @Mock
-    private ProductDataProvider productDataProvider;
+    private TemplateDataProvider templateDataProvider;
 
     @InjectMocks
-    private FindAllProductUseCaseImpl findAllProductUseCase;
+    private FindAllTemplateUseCaseImpl findAllTemplateUseCase;
 
     @Test
     void shouldCallDataProviderWithCorrectParameters() {
         Pageable pageable = mock(Pageable.class);
         String name = "name";
-        ProductStatus status = ProductStatus.DISPONIVEL;
 
-        findAllProductUseCase.execute(pageable, name, status);
+        findAllTemplateUseCase.execute(pageable, name);
 
-        verify(productDataProvider).findAllPaged(pageable, name, status);
+        verify(templateDataProvider).findAll(pageable, name);
     }
 }
