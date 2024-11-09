@@ -15,9 +15,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.UUID;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -86,5 +91,23 @@ class ProductDataProviderImplTest {
         when(pgProductRepository.getReferenceById(id)).thenThrow(new EntityNotFoundException());
 
         Assertions.assertThrows(ProductDataProviderException.class, () -> productDataProviderImpl.update(id, dto));
+    }
+
+    @Test
+    void shouldFindAllPagedCorrectly() {
+        Pageable pageable = mock(Pageable.class);
+
+        PgProduct pgProduct = new PgProduct();
+        Product expectedProduct = new Product();
+
+        when(pgProductRepository.findAllPaged(pageable, null, null)).thenReturn(new PageImpl<>(List.of(pgProduct)));
+        when(modelMapper.map(pgProduct, Product.class)).thenReturn(expectedProduct);
+
+        Page<Product> products = productDataProviderImpl.findAllPaged(pageable, null, null);
+
+        Assertions.assertNotNull(products, "Products should not be null");
+        Assertions.assertEquals(1, products.getTotalElements(), "Should have 1 element");
+        Assertions.assertNotNull(products.getContent(), "Products content should not be null");
+        Assertions.assertEquals(expectedProduct, products.getContent().get(0), "Should have 1 element");
     }
 }
