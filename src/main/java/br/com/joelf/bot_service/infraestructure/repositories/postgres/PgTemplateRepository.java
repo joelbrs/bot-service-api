@@ -17,4 +17,9 @@ public interface PgTemplateRepository extends JpaRepository<PgTemplate, UUID> {
             "ORDER BY t.name"
     )
     Page<PgTemplate> findAllPaged(Pageable pageable, String name);
+
+    @Query("SELECT t FROM PgTemplate t " +
+            "WHERE t.status = 'ATIVO'"
+    )
+    Boolean existsActiveTemplate();
 }

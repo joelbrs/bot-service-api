@@ -15,4 +15,5 @@ public class Template {
     private UUID id;
     private String name;
     private String content;
+    private TemplateStatus status;
 }

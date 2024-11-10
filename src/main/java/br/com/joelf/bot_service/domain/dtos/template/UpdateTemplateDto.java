@@ -1,7 +1,9 @@
 package br.com.joelf.bot_service.domain.dtos.template;
 
 
+import br.com.joelf.bot_service.domain.entities.TemplateStatus;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,4 +17,7 @@ public class UpdateTemplateDto {
     @NotBlank
     private String name;
     private String content;
+
+    @NotNull
+    private TemplateStatus status;
 }

@@ -58,4 +58,9 @@ public class TemplateDataProviderImpl implements TemplateDataProvider {
             throw new TemplateDataProviderException("Error deleting template, id: " + id);
         }
     }
+
+    @Override
+    public Boolean existsActiveTemplate() {
+        return pgTemplateRepository.existsActiveTemplate();
+    }
 }

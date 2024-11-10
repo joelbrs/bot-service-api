@@ -1,6 +1,7 @@
 package br.com.joelf.bot_service.infraestructure.repositories.postgres.domain;
 
 import br.com.joelf.bot_service.domain.entities.Template;
+import br.com.joelf.bot_service.domain.entities.TemplateStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,4 +23,5 @@ public class PgTemplate extends Template {
     @Column(nullable = false)
     private String name;
     private String content;
+    private TemplateStatus status;
 }

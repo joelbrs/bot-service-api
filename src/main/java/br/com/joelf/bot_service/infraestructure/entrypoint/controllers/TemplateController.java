@@ -3,10 +3,7 @@ package br.com.joelf.bot_service.infraestructure.entrypoint.controllers;
 import br.com.joelf.bot_service.domain.dtos.template.CreateTemplateDto;
 import br.com.joelf.bot_service.domain.dtos.template.UpdateTemplateDto;
 import br.com.joelf.bot_service.domain.entities.Template;
-import br.com.joelf.bot_service.domain.usecase.CreateTemplateUseCase;
-import br.com.joelf.bot_service.domain.usecase.DeleteTemplateUseCase;
-import br.com.joelf.bot_service.domain.usecase.FindAllTemplateUseCase;
-import br.com.joelf.bot_service.domain.usecase.UpdateTemplateUseCase;
+import br.com.joelf.bot_service.domain.usecase.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,6 +23,7 @@ public class TemplateController {
     private final UpdateTemplateUseCase updateTemplateUseCase;
     private final FindAllTemplateUseCase findAllTemplateUseCase;
     private final DeleteTemplateUseCase deleteTemplateUseCase;
+    private final ExistsActiveTemplateUseCase existsActiveTemplateUseCase;
 
     @GetMapping
     public ResponseEntity<Page<Template>> findAll(
@@ -33,6 +31,11 @@ public class TemplateController {
             @RequestParam(required = false) String name
     ) {
         return ResponseEntity.ok(findAllTemplateUseCase.execute(pageable, name));
+    }
+
+    @GetMapping("/existe-ativo")
+    public ResponseEntity<Boolean> existsActive() {
+        return ResponseEntity.ok(existsActiveTemplateUseCase.execute());
     }
 
     @PostMapping
