@@ -2,7 +2,7 @@ spring:
     application:
         name: bot-service
     profiles:
-        active: "@spring.profiles.active@"
+        active: hml
 
 server:
     servlet:
