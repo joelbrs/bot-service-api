@@ -5,6 +5,7 @@ import br.com.joelf.bot_service.domain.dtos.template.CreateTemplateDto;
 import br.com.joelf.bot_service.domain.dtos.template.UpdateTemplateDto;
 import br.com.joelf.bot_service.domain.entities.Product;
 import br.com.joelf.bot_service.domain.entities.Template;
+import br.com.joelf.bot_service.domain.entities.TemplateStatus;
 import br.com.joelf.bot_service.infraestructure.repositories.postgres.PgTemplateRepository;
 import br.com.joelf.bot_service.infraestructure.repositories.postgres.domain.PgProduct;
 import br.com.joelf.bot_service.infraestructure.repositories.postgres.domain.PgTemplate;
@@ -40,18 +41,24 @@ class TemplateDataProviderImplTest {
 
     @Test
     void shouldCreateTemplateOnSucces() {
-        CreateTemplateDto dto = new CreateTemplateDto("name", "content");
+        CreateTemplateDto dto = new CreateTemplateDto("name", "content", TemplateStatus.INATIVO);
 
         UUID generatedId = UUID.randomUUID();
 
         PgTemplate mappedPgTemplate = new PgTemplate();
         mappedPgTemplate.setName(dto.getName());
         mappedPgTemplate.setContent(dto.getContent());
+        mappedPgTemplate.setStatus(dto.getStatus());
 
         mappedPgTemplate.setId(generatedId);
 
         Template expectedTemplate =
-                new Template(mappedPgTemplate.getId(), mappedPgTemplate.getName(), mappedPgTemplate.getContent());
+                new Template(
+                        mappedPgTemplate.getId(),
+                        mappedPgTemplate.getName(),
+                        mappedPgTemplate.getContent(),
+                        mappedPgTemplate.getStatus()
+                );
 
         when(modelMapper.map(dto, PgTemplate.class)).thenReturn(mappedPgTemplate);
         when(pgTemplateRepository.save(mappedPgTemplate)).thenReturn(mappedPgTemplate);
@@ -66,16 +73,22 @@ class TemplateDataProviderImplTest {
     @Test
     void shouldUpdateTemplateOnSucces() {
         UUID id = UUID.randomUUID();
-        UpdateTemplateDto dto = new UpdateTemplateDto("name", "content");
+        UpdateTemplateDto dto = new UpdateTemplateDto("name", "content", TemplateStatus.ATIVO);
 
         PgTemplate mappedPgTemplate = new PgTemplate();
         mappedPgTemplate.setName(dto.getName());
         mappedPgTemplate.setContent(dto.getContent());
+        mappedPgTemplate.setStatus(dto.getStatus());
 
         when(pgTemplateRepository.getReferenceById(id)).thenReturn(mappedPgTemplate);
 
         Template expectedTemplate =
-                new Template(mappedPgTemplate.getId(), mappedPgTemplate.getName(), mappedPgTemplate.getContent());
+                new Template(
+                        mappedPgTemplate.getId(),
+                        mappedPgTemplate.getName(),
+                        mappedPgTemplate.getContent(),
+                        mappedPgTemplate.getStatus()
+                );
 
         when(pgTemplateRepository.save(mappedPgTemplate)).thenReturn(mappedPgTemplate);
         when(modelMapper.map(mappedPgTemplate, Template.class)).thenReturn(expectedTemplate);
@@ -89,7 +102,7 @@ class TemplateDataProviderImplTest {
     @Test
     void shouldThrowDataProviderExceptionWhenTemplateNotFound() {
         UUID id = UUID.randomUUID();
-        UpdateTemplateDto dto = new UpdateTemplateDto("name", "content");
+        UpdateTemplateDto dto = new UpdateTemplateDto("name", "content", TemplateStatus.ATIVO);
 
         when(pgTemplateRepository.getReferenceById(id)).thenThrow(new EntityNotFoundException());
 
@@ -142,5 +155,12 @@ class TemplateDataProviderImplTest {
         doThrow(new DataIntegrityViolationException("Error")).when(pgTemplateRepository).deleteById(id);
 
         Assertions.assertThrows(TemplateDataProviderException.class, () -> templateDataProvider.delete(id));
+    }
+
+    @Test
+    void shouldFindExistentActiveTemplate() {
+        when(pgTemplateRepository.existsActiveTemplate()).thenReturn(Boolean.TRUE);
+
+        Assertions.assertTrue(templateDataProvider.existsActiveTemplate());
     }
 }
