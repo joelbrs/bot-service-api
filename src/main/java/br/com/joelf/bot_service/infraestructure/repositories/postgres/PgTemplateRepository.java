@@ -14,7 +14,7 @@ import java.util.UUID;
 public interface PgTemplateRepository extends JpaRepository<PgTemplate, UUID> {
 
     @Query("SELECT t FROM PgTemplate t " +
-            "WHERE t.name IS NULL OR t.name LIKE CONCAT('%', CAST(:name AS string), '%') " +
+            "WHERE (:name IS NULL OR t.name LIKE CONCAT('%', CAST(:name AS string), '%')) " +
             "ORDER BY t.name"
     )
     Page<PgTemplate> findAllPaged(Pageable pageable, String name);
