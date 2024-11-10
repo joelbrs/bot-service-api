@@ -159,7 +159,7 @@ class TemplateDataProviderImplTest {
 
     @Test
     void shouldFindExistentActiveTemplate() {
-        when(pgTemplateRepository.existsActiveTemplate()).thenReturn(Boolean.TRUE);
+        when(pgTemplateRepository.existsTemplateByStatus(TemplateStatus.ATIVO)).thenReturn(Boolean.TRUE);
 
         Assertions.assertTrue(templateDataProvider.existsActiveTemplate());
     }
