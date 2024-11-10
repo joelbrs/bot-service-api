@@ -5,6 +5,7 @@ import br.com.joelf.bot_service.application.dataprovider.exceptions.TemplateData
 import br.com.joelf.bot_service.domain.dtos.template.CreateTemplateDto;
 import br.com.joelf.bot_service.domain.dtos.template.UpdateTemplateDto;
 import br.com.joelf.bot_service.domain.entities.Template;
+import br.com.joelf.bot_service.domain.entities.TemplateStatus;
 import br.com.joelf.bot_service.infraestructure.repositories.postgres.PgTemplateRepository;
 import br.com.joelf.bot_service.infraestructure.repositories.postgres.domain.PgTemplate;
 import jakarta.persistence.EntityNotFoundException;
@@ -57,5 +58,10 @@ public class TemplateDataProviderImpl implements TemplateDataProvider {
         } catch (Exception e) {
             throw new TemplateDataProviderException("Error deleting template, id: " + id);
         }
+    }
+
+    @Override
+    public Boolean existsActiveTemplate() {
+        return pgTemplateRepository.existsTemplateByStatus(TemplateStatus.ATIVO);
     }
 }

@@ -5,9 +5,9 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum ProductStatus {
-    DISPONIVEL("DISPONIVEL"),
-    INDISPONIVEL("INDISPONIVEL");
+public enum TemplateStatus {
+    ATIVO("ATIVO"),
+    INATIVO("INATIVO");
 
     private final String status;
 }
