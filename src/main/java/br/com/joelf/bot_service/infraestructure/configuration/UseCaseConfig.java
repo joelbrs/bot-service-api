@@ -5,6 +5,7 @@ import br.com.joelf.bot_service.application.dataprovider.SubProductDataProvider;
 import br.com.joelf.bot_service.application.dataprovider.TemplateDataProvider;
 import br.com.joelf.bot_service.application.usecase.*;
 import br.com.joelf.bot_service.domain.usecase.*;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -74,5 +75,18 @@ public class UseCaseConfig {
             TemplateDataProvider templateDataProvider
     ) {
         return new ExistsActiveTemplateUseCaseImpl(templateDataProvider);
+    }
+
+    @Bean
+    public FindProductByIdUseCase findProductByIdUseCase(
+            ModelMapper modelMapper,
+            ProductDataProvider productDataProvider,
+            SubProductDataProvider subProductDataProvider
+    ) {
+        return new FindProductByIdUseCaseImpl(
+                modelMapper,
+                productDataProvider,
+                subProductDataProvider
+        );
     }
 }

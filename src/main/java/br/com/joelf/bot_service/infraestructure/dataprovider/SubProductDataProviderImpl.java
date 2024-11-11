@@ -11,7 +11,9 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class SubProductDataProviderImpl implements SubProductDataProvider {
@@ -26,6 +28,14 @@ public class SubProductDataProviderImpl implements SubProductDataProvider {
         pgSubProduct.setProduct(pgProduct);
 
         return modelMapper.map(pgSubProductRepository.save(pgSubProduct), SubProduct.class);
+    }
+
+    @Override
+    public List findAllByProductId(UUID id) {
+        List<PgSubProduct> subProducts = pgSubProductRepository.findAllByProductId(id);
+        return subProducts.stream()
+                .map(pgSubProduct -> modelMapper.map(pgSubProduct, SubProduct.class))
+                .toList();
     }
 
     @Override

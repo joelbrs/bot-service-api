@@ -7,7 +7,6 @@ import br.com.joelf.bot_service.domain.dtos.product.UpdateProductDto;
 import br.com.joelf.bot_service.domain.entities.Product;
 import br.com.joelf.bot_service.domain.entities.ProductStatus;
 import br.com.joelf.bot_service.infraestructure.repositories.postgres.PgProductRepository;
-
 import br.com.joelf.bot_service.infraestructure.repositories.postgres.domain.PgProduct;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
@@ -47,6 +46,13 @@ public class ProductDataProviderImpl implements ProductDataProvider {
         } catch (EntityNotFoundException e) {
             throw new ProductDataProviderException("Product not found, id: " + id);
         }
+    }
+
+    @Override
+    public Product findById(UUID id) {
+        PgProduct pgProduct = pgProductRepository.findById(id)
+                .orElseThrow(() -> new ProductDataProviderException("Product not found, id: " + id));
+        return modelMapper.map(pgProduct, Product.class);
     }
 
     @Override

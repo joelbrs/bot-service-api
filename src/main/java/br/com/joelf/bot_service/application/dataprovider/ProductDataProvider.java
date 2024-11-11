@@ -14,5 +14,6 @@ public interface ProductDataProvider {
     Page<Product> findAllPaged(Pageable pageable, String name, ProductStatus status);
     Product create(CreateProductDto product);
     Product update(UUID id, UpdateProductDto product) throws ProductDataProviderException;
+    Product findById(UUID id);
     void delete(UUID id) throws ProductDataProviderException;
 }
