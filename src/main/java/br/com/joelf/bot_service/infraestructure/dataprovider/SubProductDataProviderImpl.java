@@ -46,4 +46,13 @@ public class SubProductDataProviderImpl implements SubProductDataProvider {
             throw new SubProductDataProviderException("SubProducts cannot be deleted");
         }
     }
+
+    @Override
+    public void deleteAll() {
+        try {
+            pgSubProductRepository.deleteAll();
+        } catch (DataIntegrityViolationException e) {
+            throw new SubProductDataProviderException("SubProducts cannot be deleted");
+        }
+    }
 }

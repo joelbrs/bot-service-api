@@ -30,9 +30,10 @@ public class UseCaseConfig {
 
     @Bean
     public DeleteProductUseCase deleteProductUseCase(
-            ProductDataProvider productDataProvider
+            ProductDataProvider productDataProvider,
+            SubProductDataProvider subProductDataProvider
     ) {
-        return new DeleteProductUseCaseImpl(productDataProvider);
+        return new DeleteProductUseCaseImpl(productDataProvider, subProductDataProvider);
     }
 
     @Bean

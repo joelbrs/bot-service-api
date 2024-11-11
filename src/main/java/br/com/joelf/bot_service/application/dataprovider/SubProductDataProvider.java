@@ -10,4 +10,5 @@ public interface SubProductDataProvider {
     SubProduct<?> create(SubProduct<Product> subProduct);
     List<SubProduct<Product>> findAllByProductId(UUID id);
     void deleteAllByProductId(UUID id);
+    void deleteAll();
 }

@@ -57,7 +57,7 @@ public class UseCaseConfigTest {
 
     @Test
     void shouldReturnCorrectDeleteProductUseCase() {
-        DeleteProductUseCase useCase = useCaseConfig.deleteProductUseCase(productDataProvider);
+        DeleteProductUseCase useCase = useCaseConfig.deleteProductUseCase(productDataProvider, subProductDataProvider);
 
         Assertions.assertNotNull(useCase, "ProductDataProvider should not be null");
         Assertions.assertInstanceOf(
