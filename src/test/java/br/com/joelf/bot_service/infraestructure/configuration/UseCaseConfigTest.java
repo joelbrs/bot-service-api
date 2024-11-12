@@ -28,7 +28,7 @@ public class UseCaseConfigTest {
 
     @BeforeEach
     void setUp() {
-        useCaseConfig = new UseCaseConfig();
+        useCaseConfig = new UseCaseConfig("");
     }
 
     @Test

@@ -9,6 +9,7 @@ import br.com.joelf.bot_service.domain.usecase.*;
 import br.com.joelf.bot_service.infraestructure.authentication.JwtService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +17,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class UseCaseConfig {
+
+    private final String cookieName;
+
+    public UseCaseConfig(
+            @Value("${security.cookie.name}") String cookieName
+    ) {
+        this.cookieName = cookieName;
+    }
 
     @Bean
     public CreateProductUseCase createProductUseCase(
@@ -111,7 +120,7 @@ public class UseCaseConfig {
             UserDataProvider userDataProvider,
             @Qualifier("JwtServiceImpl") JwtService jwtService
     ) {
-        return new SignInUserUseCaseImpl(authenticationManager, userDataProvider, jwtService);
+        return new SignInUserUseCaseImpl(cookieName, authenticationManager, userDataProvider, jwtService);
     }
 
     @Bean
@@ -119,5 +128,10 @@ public class UseCaseConfig {
             ModelMapper modelMapper
     ) {
         return new FindLoggedUserUseCaseImpl(modelMapper);
+    }
+
+    @Bean
+    public LogoutUseCase logoutUseCase() {
+        return new LogoutUseCaseImpl(cookieName);
     }
 }
