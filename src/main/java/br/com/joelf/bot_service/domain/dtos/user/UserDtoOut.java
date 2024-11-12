@@ -1,16 +1,14 @@
 package br.com.joelf.bot_service.domain.dtos.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserDtoOut {
     private UUID id;
     private String cpfCnpj;

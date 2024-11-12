@@ -11,6 +11,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class UseCaseConfig {
@@ -96,17 +98,26 @@ public class UseCaseConfig {
 
     @Bean
     public SignUpUserUseCase signUpUserUseCase(
+            PasswordEncoder passwordEncoder,
             ModelMapper modelMapper,
             UserDataProvider userDataProvider
     ) {
-        return new SignUpUserUseCaseImpl(modelMapper, userDataProvider);
+        return new SignUpUserUseCaseImpl(modelMapper, passwordEncoder, userDataProvider);
     }
 
     @Bean
     public SignInUserUseCase signInUserUseCase(
+            AuthenticationManager authenticationManager,
             UserDataProvider userDataProvider,
             @Qualifier("JwtServiceImpl") JwtService jwtService
     ) {
-        return new SignInUserUseCaseImpl(userDataProvider, jwtService);
+        return new SignInUserUseCaseImpl(authenticationManager, userDataProvider, jwtService);
+    }
+
+    @Bean
+    public FindLoggedUserUseCase findLoggedUserUseCase(
+            ModelMapper modelMapper
+    ) {
+        return new FindLoggedUserUseCaseImpl(modelMapper);
     }
 }

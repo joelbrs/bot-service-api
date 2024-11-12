@@ -35,4 +35,15 @@ public class PgUser extends User {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public PgUser(UUID id, String name, String cpfCnpj, String password, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        super(id, name, cpfCnpj, password);
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String getUsername() {
+        return super.getCpfCnpj();
+    }
 }

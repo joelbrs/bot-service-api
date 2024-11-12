@@ -1,10 +1,12 @@
 package br.com.joelf.bot_service.infraestructure.authentication;
 
+import br.com.joelf.bot_service.domain.entities.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,7 +20,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
-import java.util.List;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -26,6 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Value("${security.cookie.name}")
     private String cookieName;
 
+    private final ModelMapper modelMapper;
     private final HandlerExceptionResolver handlerExceptionResolver;
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
@@ -33,11 +35,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public JwtAuthenticationFilter(
             JwtService jwtService,
             UserDetailsService userDetailsService,
-            HandlerExceptionResolver handlerExceptionResolver
+            HandlerExceptionResolver handlerExceptionResolver,
+            ModelMapper modelMapper
     ) {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
         this.handlerExceptionResolver = handlerExceptionResolver;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -54,11 +58,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         try {
-            final String cpfCnpj = jwtService.extractUsername(token);
+            String cpfCnpj = jwtService.extractUsername(token);
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
             if (cpfCnpj != null && authentication == null) {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(cpfCnpj);
+                User userDetails = modelMapper.map(userDetailsService.loadUserByUsername(cpfCnpj), User.class);
 
                 if (jwtService.isTokenValid(token, userDetails)) {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(

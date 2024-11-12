@@ -4,7 +4,7 @@ import br.com.joelf.bot_service.domain.dtos.user.SignInUserDto;
 import br.com.joelf.bot_service.domain.dtos.user.SignUpUserDto;
 import br.com.joelf.bot_service.domain.dtos.user.UserDtoOut;
 import br.com.joelf.bot_service.domain.dtos.user.UserTokenDto;
-import br.com.joelf.bot_service.domain.entities.User;
+import br.com.joelf.bot_service.domain.usecase.FindLoggedUserUseCase;
 import br.com.joelf.bot_service.domain.usecase.SignInUserUseCase;
 import br.com.joelf.bot_service.domain.usecase.SignUpUserUseCase;
 import jakarta.servlet.http.Cookie;
@@ -13,10 +13,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -28,7 +25,7 @@ public class AuthenticationController {
     private final SignInUserUseCase signInUserUseCase;
     private final SignUpUserUseCase signUpUserUseCase;
 
-    public AuthenticationController(SignInUserUseCase signInUserUseCase, SignUpUserUseCase signUpUserUseCase) {
+    public AuthenticationController(SignInUserUseCase signInUserUseCase, SignUpUserUseCase signUpUserUseCase, FindLoggedUserUseCase findLoggedUserUseCase) {
         this.signInUserUseCase = signInUserUseCase;
         this.signUpUserUseCase = signUpUserUseCase;
     }
