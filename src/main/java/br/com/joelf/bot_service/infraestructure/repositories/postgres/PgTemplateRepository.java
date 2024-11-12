@@ -5,6 +5,7 @@ import br.com.joelf.bot_service.infraestructure.repositories.postgres.domain.PgT
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -21,4 +22,8 @@ public interface PgTemplateRepository extends JpaRepository<PgTemplate, UUID> {
 
     @Query("SELECT CASE WHEN COUNT(t) > 0 THEN TRUE ELSE FALSE END FROM PgTemplate t WHERE t.status = :status")
     Boolean existsTemplateByStatus(TemplateStatus status);
+
+    @Modifying
+    @Query("UPDATE PgTemplate t SET t.status = 'INATIVO' WHERE t.status = 'ATIVO'")
+    void updateActiveToInactive();
 }

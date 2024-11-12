@@ -72,13 +72,6 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public ExistsActiveTemplateUseCase existsActiveTemplateUseCase(
-            TemplateDataProvider templateDataProvider
-    ) {
-        return new ExistsActiveTemplateUseCaseImpl(templateDataProvider);
-    }
-
-    @Bean
     public FindProductByIdUseCase findProductByIdUseCase(
             ModelMapper modelMapper,
             ProductDataProvider productDataProvider,
@@ -89,5 +82,12 @@ public class UseCaseConfig {
                 productDataProvider,
                 subProductDataProvider
         );
+    }
+
+    @Bean
+    public FindTemplateByIdUseCase findTemplateByIdUseCase(
+            TemplateDataProvider templateDataProvider
+    ) {
+        return new FindTemplateByIdUseCaseImpl(templateDataProvider);
     }
 }

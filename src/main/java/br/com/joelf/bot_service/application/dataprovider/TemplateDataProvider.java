@@ -11,7 +11,8 @@ import java.util.UUID;
 public interface TemplateDataProvider {
     Template create(CreateTemplateDto template);
     Template update(UUID id, UpdateTemplateDto template);
+    Template findById(UUID id);
     Page<Template> findAll(Pageable pageable, String name);
     void delete(UUID id);
-    Boolean existsActiveTemplate();
+    void updateActiveToInactive();
 }
