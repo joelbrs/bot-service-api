@@ -5,6 +5,7 @@ import br.com.joelf.bot_service.application.dataprovider.SubProductDataProvider;
 import br.com.joelf.bot_service.application.dataprovider.TemplateDataProvider;
 import br.com.joelf.bot_service.application.usecase.*;
 import br.com.joelf.bot_service.domain.usecase.*;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -29,9 +30,10 @@ public class UseCaseConfig {
 
     @Bean
     public DeleteProductUseCase deleteProductUseCase(
-            ProductDataProvider productDataProvider
+            ProductDataProvider productDataProvider,
+            SubProductDataProvider subProductDataProvider
     ) {
-        return new DeleteProductUseCaseImpl(productDataProvider);
+        return new DeleteProductUseCaseImpl(productDataProvider, subProductDataProvider);
     }
 
     @Bean
@@ -70,9 +72,22 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public ExistsActiveTemplateUseCase existsActiveTemplateUseCase(
+    public FindProductByIdUseCase findProductByIdUseCase(
+            ModelMapper modelMapper,
+            ProductDataProvider productDataProvider,
+            SubProductDataProvider subProductDataProvider
+    ) {
+        return new FindProductByIdUseCaseImpl(
+                modelMapper,
+                productDataProvider,
+                subProductDataProvider
+        );
+    }
+
+    @Bean
+    public FindTemplateByIdUseCase findTemplateByIdUseCase(
             TemplateDataProvider templateDataProvider
     ) {
-        return new ExistsActiveTemplateUseCaseImpl(templateDataProvider);
+        return new FindTemplateByIdUseCaseImpl(templateDataProvider);
     }
 }

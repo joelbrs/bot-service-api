@@ -4,10 +4,7 @@ import br.com.joelf.bot_service.domain.dtos.product.CreateProductDto;
 import br.com.joelf.bot_service.domain.dtos.product.UpdateProductDto;
 import br.com.joelf.bot_service.domain.entities.Product;
 import br.com.joelf.bot_service.domain.entities.ProductStatus;
-import br.com.joelf.bot_service.domain.usecase.CreateProductUseCase;
-import br.com.joelf.bot_service.domain.usecase.DeleteProductUseCase;
-import br.com.joelf.bot_service.domain.usecase.FindAllProductUseCase;
-import br.com.joelf.bot_service.domain.usecase.UpdateProductUseCase;
+import br.com.joelf.bot_service.domain.usecase.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,6 +24,7 @@ public class ProductController {
     private final CreateProductUseCase createProductUseCase;
     private final UpdateProductUseCase updateProductUseCase;
     private final DeleteProductUseCase deleteProductUseCase;
+    private final FindProductByIdUseCase findProductByIdUseCase;
 
     @GetMapping
     public ResponseEntity<Page<Product>> findAllPaged(
@@ -35,6 +33,11 @@ public class ProductController {
             @RequestParam(required = false)ProductStatus status
     ) {
         return ResponseEntity.ok(findAllProductUseCase.execute(pageable, name, status));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> findById(@PathVariable UUID id) {
+        return ResponseEntity.ok(findProductByIdUseCase.execute(id));
     }
 
     @PostMapping

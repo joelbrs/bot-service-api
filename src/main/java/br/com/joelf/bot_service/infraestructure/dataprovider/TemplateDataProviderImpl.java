@@ -5,13 +5,13 @@ import br.com.joelf.bot_service.application.dataprovider.exceptions.TemplateData
 import br.com.joelf.bot_service.domain.dtos.template.CreateTemplateDto;
 import br.com.joelf.bot_service.domain.dtos.template.UpdateTemplateDto;
 import br.com.joelf.bot_service.domain.entities.Template;
-import br.com.joelf.bot_service.domain.entities.TemplateStatus;
 import br.com.joelf.bot_service.infraestructure.repositories.postgres.PgTemplateRepository;
 import br.com.joelf.bot_service.infraestructure.repositories.postgres.domain.PgTemplate;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -42,6 +42,13 @@ public class TemplateDataProviderImpl implements TemplateDataProvider {
     }
 
     @Override
+    public Template findById(UUID id) {
+        PgTemplate pgTemplate = pgTemplateRepository.findById(id)
+                .orElseThrow(() -> new TemplateDataProviderException("Template not found, id: " + id));
+        return modelMapper.map(pgTemplate, Template.class);
+    }
+
+    @Override
     public Page<Template> findAll(Pageable pageable, String name) {
         Page<PgTemplate> pgTemplates = pgTemplateRepository.findAllPaged(pageable, name);
         return pgTemplates.map(pgTemplate -> modelMapper.map(pgTemplate, Template.class));
@@ -55,13 +62,17 @@ public class TemplateDataProviderImpl implements TemplateDataProvider {
 
         try {
             pgTemplateRepository.deleteById(id);
-        } catch (Exception e) {
+        } catch (DataIntegrityViolationException e) {
             throw new TemplateDataProviderException("Error deleting template, id: " + id);
         }
     }
 
     @Override
-    public Boolean existsActiveTemplate() {
-        return pgTemplateRepository.existsTemplateByStatus(TemplateStatus.ATIVO);
+    public void updateActiveToInactive() {
+        try {
+            pgTemplateRepository.updateActiveToInactive();
+        } catch (DataIntegrityViolationException e) {
+            throw new TemplateDataProviderException("Error updating all templates to inactive");
+        }
     }
 }

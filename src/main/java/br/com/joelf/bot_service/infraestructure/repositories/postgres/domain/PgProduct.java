@@ -20,5 +20,7 @@ public class PgProduct extends Product {
 
     @Column(nullable = false)
     private String name;
+
+    @Enumerated(EnumType.STRING)
     private ProductStatus status;
 }

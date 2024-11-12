@@ -11,7 +11,9 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class SubProductDataProviderImpl implements SubProductDataProvider {
@@ -29,9 +31,26 @@ public class SubProductDataProviderImpl implements SubProductDataProvider {
     }
 
     @Override
+    public List findAllByProductId(UUID id) {
+        List<PgSubProduct> subProducts = pgSubProductRepository.findAllByProductId(id);
+        return subProducts.stream()
+                .map(pgSubProduct -> modelMapper.map(pgSubProduct, SubProduct.class))
+                .toList();
+    }
+
+    @Override
     public void deleteAllByProductId(UUID productId) {
         try {
             pgSubProductRepository.deleteAllByProductId(productId);
+        } catch (DataIntegrityViolationException e) {
+            throw new SubProductDataProviderException("SubProducts cannot be deleted");
+        }
+    }
+
+    @Override
+    public void deleteAll() {
+        try {
+            pgSubProductRepository.deleteAll();
         } catch (DataIntegrityViolationException e) {
             throw new SubProductDataProviderException("SubProducts cannot be deleted");
         }
