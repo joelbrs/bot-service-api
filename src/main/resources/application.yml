@@ -7,3 +7,11 @@ spring:
 server:
     servlet:
         context-path: /bot-service
+    port: 8081
+
+security:
+    jwt:
+        secret-key: ${JWT_SECRET_KEY:avalidsecretjwtkeywithatleast256bitstomakerequestsproperly}
+        expiration-time: ${JWT_EXPIRATION_TIME:86400000}
+    cookie:
+        name: ${COOKIE_NAME:access_token}

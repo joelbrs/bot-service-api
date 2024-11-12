@@ -3,9 +3,12 @@ package br.com.joelf.bot_service.infraestructure.configuration;
 import br.com.joelf.bot_service.application.dataprovider.ProductDataProvider;
 import br.com.joelf.bot_service.application.dataprovider.SubProductDataProvider;
 import br.com.joelf.bot_service.application.dataprovider.TemplateDataProvider;
+import br.com.joelf.bot_service.application.dataprovider.UserDataProvider;
 import br.com.joelf.bot_service.application.usecase.*;
 import br.com.joelf.bot_service.domain.usecase.*;
+import br.com.joelf.bot_service.infraestructure.authentication.JwtService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -89,5 +92,20 @@ public class UseCaseConfig {
             TemplateDataProvider templateDataProvider
     ) {
         return new FindTemplateByIdUseCaseImpl(templateDataProvider);
+    }
+
+    @Bean
+    public SignUpUserUseCase signUpUserUseCase(
+            UserDataProvider userDataProvider
+    ) {
+        return new SignUpUserUseCaseImpl(userDataProvider);
+    }
+
+    @Bean
+    public SignInUserUseCase signInUserUseCase(
+            UserDataProvider userDataProvider,
+            @Qualifier("JwtServiceImpl") JwtService jwtService
+    ) {
+        return new SignInUserUseCaseImpl(userDataProvider, jwtService);
     }
 }

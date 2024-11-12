@@ -8,3 +8,10 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+
+security:
+  jwt:
+    secret-key: ${JWT_SECRET_KEY:avalidsecretjwtkeywithatleast256bitstomakerequestsproperly}
+    expiration-time: ${JWT_EXPIRATION_TIME:86400000}
+  cookie:
+    name: ${COOKIE_NAME:access_token}

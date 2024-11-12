@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface PgUserRepository extends JpaRepository<UUID, PgUser> {
+public interface PgUserRepository extends JpaRepository<PgUser, UUID> {
 
     @Query("SELECT u FROM PgUser u WHERE u.cpfCnpj = :cpfCnpj")
     Optional<PgUser> findByCpfCnpj(String cpfCnpj);
