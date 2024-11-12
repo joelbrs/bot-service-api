@@ -2,6 +2,7 @@ package br.com.joelf.bot_service.infraestructure.entrypoint.controllers;
 
 import br.com.joelf.bot_service.domain.dtos.user.SignInUserDto;
 import br.com.joelf.bot_service.domain.dtos.user.SignUpUserDto;
+import br.com.joelf.bot_service.domain.dtos.user.UserDtoOut;
 import br.com.joelf.bot_service.domain.dtos.user.UserTokenDto;
 import br.com.joelf.bot_service.domain.entities.User;
 import br.com.joelf.bot_service.domain.usecase.SignInUserUseCase;
@@ -46,7 +47,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/sign-up")
-    public ResponseEntity<User> signUp(@RequestBody @Valid SignUpUserDto user) {
+    public ResponseEntity<UserDtoOut> signUp(@RequestBody @Valid SignUpUserDto user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(signUpUserUseCase.execute(user));
     }
 }

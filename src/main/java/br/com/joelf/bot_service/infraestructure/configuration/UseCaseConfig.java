@@ -96,9 +96,10 @@ public class UseCaseConfig {
 
     @Bean
     public SignUpUserUseCase signUpUserUseCase(
+            ModelMapper modelMapper,
             UserDataProvider userDataProvider
     ) {
-        return new SignUpUserUseCaseImpl(userDataProvider);
+        return new SignUpUserUseCaseImpl(modelMapper, userDataProvider);
     }
 
     @Bean
