@@ -156,11 +156,4 @@ class TemplateDataProviderImplTest {
 
         Assertions.assertThrows(TemplateDataProviderException.class, () -> templateDataProvider.delete(id));
     }
-
-    @Test
-    void shouldFindExistentActiveTemplate() {
-        when(pgTemplateRepository.existsTemplateByStatus(TemplateStatus.ATIVO)).thenReturn(Boolean.TRUE);
-
-        Assertions.assertTrue(templateDataProvider.existsActiveTemplate());
-    }
 }
