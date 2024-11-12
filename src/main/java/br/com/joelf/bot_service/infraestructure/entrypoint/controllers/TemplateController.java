@@ -23,7 +23,7 @@ public class TemplateController {
     private final UpdateTemplateUseCase updateTemplateUseCase;
     private final FindAllTemplateUseCase findAllTemplateUseCase;
     private final DeleteTemplateUseCase deleteTemplateUseCase;
-    private final ExistsActiveTemplateUseCase existsActiveTemplateUseCase;
+    private final FindTemplateByIdUseCase findTemplateByIdUseCase;
 
     @GetMapping
     public ResponseEntity<Page<Template>> findAll(
@@ -33,9 +33,9 @@ public class TemplateController {
         return ResponseEntity.ok(findAllTemplateUseCase.execute(pageable, name));
     }
 
-    @GetMapping("/existe-ativo")
-    public ResponseEntity<Boolean> existsActive() {
-        return ResponseEntity.ok(existsActiveTemplateUseCase.execute());
+    @GetMapping("/{id}")
+    public ResponseEntity<Template> findById(@PathVariable UUID id) {
+        return ResponseEntity.ok(findTemplateByIdUseCase.execute(id));
     }
 
     @PostMapping
