@@ -1,5 +1,6 @@
-package br.com.joelf.bot_service.infraestructure.authentication;
+package br.com.joelf.bot_service.infraestructure.configuration;
 
+import br.com.joelf.bot_service.infraestructure.authentication.JwtAuthenticationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

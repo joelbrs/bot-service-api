@@ -1,4 +1,4 @@
-package br.com.joelf.bot_service.infraestructure.authentication;
+package br.com.joelf.bot_service.infraestructure.configuration;
 
 import br.com.joelf.bot_service.infraestructure.repositories.postgres.PgUserRepository;
 import lombok.AllArgsConstructor;
