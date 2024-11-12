@@ -23,5 +23,7 @@ public class PgTemplate extends Template {
     @Column(nullable = false)
     private String name;
     private String content;
+
+    @Enumerated(EnumType.STRING)
     private TemplateStatus status;
 }
