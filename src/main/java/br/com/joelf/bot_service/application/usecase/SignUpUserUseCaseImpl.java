@@ -3,7 +3,9 @@ package br.com.joelf.bot_service.application.usecase;
 import br.com.joelf.bot_service.application.dataprovider.UserDataProvider;
 import br.com.joelf.bot_service.domain.dtos.user.SignUpUserDto;
 import br.com.joelf.bot_service.domain.dtos.user.UserDtoOut;
+import br.com.joelf.bot_service.domain.entities.Organization;
 import br.com.joelf.bot_service.domain.usecase.SignUpUserUseCase;
+import br.com.joelf.bot_service.domain.usecase.exceptions.SignUpUserUseCaseException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +19,10 @@ public class SignUpUserUseCaseImpl implements SignUpUserUseCase {
 
     @Override
     public UserDtoOut execute(SignUpUserDto user) {
+        if (!user.getOrganizationIdentifier().equals(Organization.CNPJ)) {
+            throw new SignUpUserUseCaseException("Invalid organization identifier");
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return modelMapper.map(userDataProvider.signUp(user), UserDtoOut.class);
     }

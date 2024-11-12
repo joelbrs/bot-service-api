@@ -27,11 +27,15 @@ public class SignUpUserDto {
     @Min(8)
     private String passwordConfirmation;
 
-    public SignUpUserDto(String cpfCnpj, String name, String password, String passwordConfirmation) {
+    @NotBlank
+    private String organizationIdentifier;
+
+    public SignUpUserDto(String cpfCnpj, String name, String password, String passwordConfirmation, String organizationIdentifier) {
         this.cpfCnpj = cpfCnpj;
         this.name = name;
         this.password = password;
         this.passwordConfirmation = passwordConfirmation;
+        this.organizationIdentifier = organizationIdentifier;
         validate();
     }
 

@@ -13,4 +13,5 @@ public class UserDtoOut {
     private UUID id;
     private String cpfCnpj;
     private String name;
+    private String organization;
 }

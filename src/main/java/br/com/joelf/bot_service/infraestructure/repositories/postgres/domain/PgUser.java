@@ -1,5 +1,6 @@
 package br.com.joelf.bot_service.infraestructure.repositories.postgres.domain;
 
+import br.com.joelf.bot_service.domain.entities.Organization;
 import br.com.joelf.bot_service.domain.entities.User;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -29,6 +30,9 @@ public class PgUser extends User {
     private String cpfCnpj;
     private String password;
 
+    @Column
+    private String organization = Organization.NAME;
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
@@ -40,10 +44,5 @@ public class PgUser extends User {
         super(id, name, cpfCnpj, password);
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-    }
-
-    @Override
-    public String getUsername() {
-        return super.getCpfCnpj();
     }
 }
