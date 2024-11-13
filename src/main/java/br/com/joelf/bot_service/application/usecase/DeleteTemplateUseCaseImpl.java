@@ -18,7 +18,7 @@ public class DeleteTemplateUseCaseImpl implements DeleteTemplateUseCase {
         try {
             deleteTemplateUseCase.delete(id);
         } catch (TemplateDataProviderException e) {
-            throw new DeleteTemplateUseCaseException(e.getMessage());
+            throw new DeleteTemplateUseCaseException(e.getMessage(), e.getPhase().getHttpStatus());
         }
     }
 }

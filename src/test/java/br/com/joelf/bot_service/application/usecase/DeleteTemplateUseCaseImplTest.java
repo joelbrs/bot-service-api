@@ -1,5 +1,6 @@
 package br.com.joelf.bot_service.application.usecase;
 
+import br.com.joelf.bot_service.application.commom.ExceptionPhase;
 import br.com.joelf.bot_service.application.dataprovider.TemplateDataProvider;
 import br.com.joelf.bot_service.application.dataprovider.exceptions.TemplateDataProviderException;
 import br.com.joelf.bot_service.domain.usecase.exceptions.DeleteTemplateUseCaseException;
@@ -36,7 +37,7 @@ public class DeleteTemplateUseCaseImplTest {
     void shouldThrowsExceptionWhenDataProviderThrowsException() {
         UUID id = UUID.randomUUID();
 
-        doThrow(new TemplateDataProviderException("Error")).when(templateDataProvider).delete(id);
+        doThrow(new TemplateDataProviderException("Error", ExceptionPhase.DATA_INTEGRITY)).when(templateDataProvider).delete(id);
 
         Assertions.assertThrows(DeleteTemplateUseCaseException.class, () -> deleteTemplateUseCaseImpl.execute(id));
     }

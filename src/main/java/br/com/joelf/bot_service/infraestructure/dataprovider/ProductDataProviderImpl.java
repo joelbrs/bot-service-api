@@ -1,5 +1,6 @@
 package br.com.joelf.bot_service.infraestructure.dataprovider;
 
+import br.com.joelf.bot_service.application.commom.ExceptionPhase;
 import br.com.joelf.bot_service.application.dataprovider.ProductDataProvider;
 import br.com.joelf.bot_service.application.dataprovider.exceptions.ProductDataProviderException;
 import br.com.joelf.bot_service.domain.dtos.product.CreateProductDto;
@@ -44,27 +45,27 @@ public class ProductDataProviderImpl implements ProductDataProvider {
 
             return modelMapper.map(pgProductRepository.save(pgProduct), Product.class);
         } catch (EntityNotFoundException e) {
-            throw new ProductDataProviderException("Product not found, id: " + id);
+            throw new ProductDataProviderException("Product not found, id: " + id, ExceptionPhase.ENTITY_NOT_FOUND);
         }
     }
 
     @Override
     public Product findById(UUID id) {
         PgProduct pgProduct = pgProductRepository.findById(id)
-                .orElseThrow(() -> new ProductDataProviderException("Product not found, id: " + id));
+                .orElseThrow(() -> new ProductDataProviderException("Product not found, id: " + id, ExceptionPhase.ENTITY_NOT_FOUND));
         return modelMapper.map(pgProduct, Product.class);
     }
 
     @Override
     public void delete(UUID id) throws ProductDataProviderException {
         if (!pgProductRepository.existsById(id)) {
-            throw new ProductDataProviderException("Product not found, id: " + id);
+            throw new ProductDataProviderException("Product not found, id: " + id, ExceptionPhase.ENTITY_NOT_FOUND);
         }
 
         try {
             pgProductRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
-            throw new ProductDataProviderException("Product cannot be deleted, id: " + id);
+            throw new ProductDataProviderException("Product cannot be deleted, id: " + id, ExceptionPhase.DATA_INTEGRITY);
         }
     }
 }

@@ -1,7 +1,9 @@
 package br.com.joelf.bot_service.domain.usecase.exceptions;
 
-public class DeleteTemplateUseCaseException extends RuntimeException {
-    public DeleteTemplateUseCaseException(String message) {
-        super(message);
+import org.springframework.http.HttpStatus;
+
+public class DeleteTemplateUseCaseException extends UseCaseException {
+    public DeleteTemplateUseCaseException(String message, HttpStatus httpStatus) {
+        super(message, httpStatus);
     }
 }

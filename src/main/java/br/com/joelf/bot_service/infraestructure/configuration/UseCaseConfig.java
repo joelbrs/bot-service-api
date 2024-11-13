@@ -3,14 +3,28 @@ package br.com.joelf.bot_service.infraestructure.configuration;
 import br.com.joelf.bot_service.application.dataprovider.ProductDataProvider;
 import br.com.joelf.bot_service.application.dataprovider.SubProductDataProvider;
 import br.com.joelf.bot_service.application.dataprovider.TemplateDataProvider;
+import br.com.joelf.bot_service.application.dataprovider.UserDataProvider;
 import br.com.joelf.bot_service.application.usecase.*;
 import br.com.joelf.bot_service.domain.usecase.*;
+import br.com.joelf.bot_service.infraestructure.authentication.JwtService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class UseCaseConfig {
+
+    private final String cookieName;
+
+    public UseCaseConfig(
+            @Value("${security.cookie.name}") String cookieName
+    ) {
+        this.cookieName = cookieName;
+    }
 
     @Bean
     public CreateProductUseCase createProductUseCase(
@@ -89,5 +103,35 @@ public class UseCaseConfig {
             TemplateDataProvider templateDataProvider
     ) {
         return new FindTemplateByIdUseCaseImpl(templateDataProvider);
+    }
+
+    @Bean
+    public SignUpUserUseCase signUpUserUseCase(
+            PasswordEncoder passwordEncoder,
+            ModelMapper modelMapper,
+            UserDataProvider userDataProvider
+    ) {
+        return new SignUpUserUseCaseImpl(modelMapper, passwordEncoder, userDataProvider);
+    }
+
+    @Bean
+    public SignInUserUseCase signInUserUseCase(
+            AuthenticationManager authenticationManager,
+            UserDataProvider userDataProvider,
+            @Qualifier("JwtServiceImpl") JwtService jwtService
+    ) {
+        return new SignInUserUseCaseImpl(cookieName, authenticationManager, userDataProvider, jwtService);
+    }
+
+    @Bean
+    public FindLoggedUserUseCase findLoggedUserUseCase(
+            ModelMapper modelMapper
+    ) {
+        return new FindLoggedUserUseCaseImpl(modelMapper);
+    }
+
+    @Bean
+    public LogoutUseCase logoutUseCase() {
+        return new LogoutUseCaseImpl(cookieName);
     }
 }

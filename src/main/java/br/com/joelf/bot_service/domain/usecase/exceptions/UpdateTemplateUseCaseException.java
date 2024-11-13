@@ -1,7 +1,9 @@
 package br.com.joelf.bot_service.domain.usecase.exceptions;
 
-public class UpdateTemplateUseCaseException extends RuntimeException {
-    public UpdateTemplateUseCaseException(String message) {
-        super(message);
+import org.springframework.http.HttpStatus;
+
+public class UpdateTemplateUseCaseException extends UseCaseException {
+    public UpdateTemplateUseCaseException(String message, HttpStatus httpStatus) {
+        super(message, httpStatus);
     }
 }

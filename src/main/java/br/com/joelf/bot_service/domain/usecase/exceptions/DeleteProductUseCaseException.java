@@ -1,7 +1,9 @@
 package br.com.joelf.bot_service.domain.usecase.exceptions;
 
-public class DeleteProductUseCaseException extends RuntimeException {
-    public DeleteProductUseCaseException(String message) {
-        super(message);
+import org.springframework.http.HttpStatus;
+
+public class DeleteProductUseCaseException extends UseCaseException {
+    public DeleteProductUseCaseException(String message, HttpStatus httpStatus) {
+        super(message, httpStatus);
     }
 }

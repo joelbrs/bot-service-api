@@ -7,3 +7,13 @@ spring:
 server:
     servlet:
         context-path: /bot-service
+        
+security:
+    jwt:
+        secret-key: ${JWT_SECRET_KEY:avalidsecretjwtkeywithatleast256bitstomakerequestsproperly}
+        expiration-time: ${JWT_EXPIRATION_TIME:86400000}
+    cookie:
+        name: ${COOKIE_NAME:access_token}
+    organization:
+        name: ${ORGANIZATION_NAME:BotService LTDA}
+        cnpj: ${ORGANIZATION_CNPJ:12345678901234}
