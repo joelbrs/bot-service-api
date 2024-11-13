@@ -1,5 +1,6 @@
 package br.com.joelf.bot_service.infraestructure.dataprovider;
 
+import br.com.joelf.bot_service.application.commom.ExceptionPhase;
 import br.com.joelf.bot_service.application.dataprovider.UserDataProvider;
 import br.com.joelf.bot_service.application.dataprovider.exceptions.UserDataProviderException;
 import br.com.joelf.bot_service.domain.dtos.user.SignUpUserDto;
@@ -24,7 +25,7 @@ public class UserDataProviderImpl implements UserDataProvider {
     @Override
     public User findByCpfCnpj(String cpfCnpj) {
         PgUser pgUser = pgUserRepository.findByCpfCnpj(cpfCnpj)
-                .orElseThrow(() -> new UserDataProviderException("User not found, cpfCnpj: " + cpfCnpj));
+                .orElseThrow(() -> new UserDataProviderException("User not found, cpfCnpj: " + cpfCnpj, ExceptionPhase.ENTITY_NOT_FOUND));
         return modelMapper.map(pgUser, User.class);
     }
 }

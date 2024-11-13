@@ -1,5 +1,6 @@
 package br.com.joelf.bot_service.infraestructure.dataprovider;
 
+import br.com.joelf.bot_service.application.commom.ExceptionPhase;
 import br.com.joelf.bot_service.application.dataprovider.TemplateDataProvider;
 import br.com.joelf.bot_service.application.dataprovider.exceptions.TemplateDataProviderException;
 import br.com.joelf.bot_service.domain.dtos.template.CreateTemplateDto;
@@ -37,14 +38,14 @@ public class TemplateDataProviderImpl implements TemplateDataProvider {
 
             return modelMapper.map(pgTemplateRepository.save(pgTemplate), Template.class);
         } catch (EntityNotFoundException e) {
-            throw new TemplateDataProviderException("Template not found, id: " + id);
+            throw new TemplateDataProviderException("Template not found, id: " + id, ExceptionPhase.ENTITY_NOT_FOUND);
         }
     }
 
     @Override
     public Template findById(UUID id) {
         PgTemplate pgTemplate = pgTemplateRepository.findById(id)
-                .orElseThrow(() -> new TemplateDataProviderException("Template not found, id: " + id));
+                .orElseThrow(() -> new TemplateDataProviderException("Template not found, id: " + id, ExceptionPhase.ENTITY_NOT_FOUND));
         return modelMapper.map(pgTemplate, Template.class);
     }
 
@@ -57,13 +58,13 @@ public class TemplateDataProviderImpl implements TemplateDataProvider {
     @Override
     public void delete(UUID id) {
         if (!pgTemplateRepository.existsById(id)) {
-            throw new TemplateDataProviderException("Template not found, id: " + id);
+            throw new TemplateDataProviderException("Template not found, id: " + id, ExceptionPhase.DATA_INTEGRITY);
         }
 
         try {
             pgTemplateRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
-            throw new TemplateDataProviderException("Error deleting template, id: " + id);
+            throw new TemplateDataProviderException("Error deleting template, id: " + id, ExceptionPhase.DATA_INTEGRITY);
         }
     }
 
@@ -72,7 +73,7 @@ public class TemplateDataProviderImpl implements TemplateDataProvider {
         try {
             pgTemplateRepository.updateActiveToInactive();
         } catch (DataIntegrityViolationException e) {
-            throw new TemplateDataProviderException("Error updating all templates to inactive");
+            throw new TemplateDataProviderException("Error updating all templates to inactive", ExceptionPhase.DATA_INTEGRITY);
         }
     }
 }

@@ -20,7 +20,7 @@ public class UpdateTemplateUseCaseImpl implements UpdateTemplateUseCase {
         try {
             return templateDataProvider.update(id, template);
         } catch (TemplateDataProviderException e) {
-            throw new UpdateTemplateUseCaseException(e.getMessage());
+            throw new UpdateTemplateUseCaseException(e.getMessage(), e.getPhase().getHttpStatus());
         }
     }
 }

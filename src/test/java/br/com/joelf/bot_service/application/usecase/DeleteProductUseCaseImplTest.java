@@ -1,5 +1,6 @@
 package br.com.joelf.bot_service.application.usecase;
 
+import br.com.joelf.bot_service.application.commom.ExceptionPhase;
 import br.com.joelf.bot_service.application.dataprovider.ProductDataProvider;
 import br.com.joelf.bot_service.application.dataprovider.exceptions.ProductDataProviderException;
 import br.com.joelf.bot_service.domain.usecase.exceptions.DeleteProductUseCaseException;
@@ -37,7 +38,7 @@ public class DeleteProductUseCaseImplTest {
     void shouldThrowsExceptionWhenProductDataProviderThrowsException() {
          UUID id = UUID.randomUUID();
 
-         doThrow(new ProductDataProviderException("Error")).when(productDataProvider).delete(id);
+         doThrow(new ProductDataProviderException("Error", ExceptionPhase.DATA_INTEGRITY)).when(productDataProvider).delete(id);
 
          Assertions.assertThrows(DeleteProductUseCaseException.class, () -> deleteProductUseCase.execute(id));
     }

@@ -32,8 +32,10 @@ public class UpdateProductUseCaseImpl implements UpdateProductUseCase {
             });
 
             return result;
-        } catch (ProductDataProviderException | SubProductDataProviderException e) {
-            throw new UpdateProductUseCaseException(e.getMessage());
+        } catch (ProductDataProviderException e) {
+            throw new UpdateProductUseCaseException(e.getMessage(), e.getPhase().getHttpStatus());
+        } catch (SubProductDataProviderException e) {
+            throw new UpdateProductUseCaseException(e.getMessage(), e.getPhase().getHttpStatus());
         }
     }
 }

@@ -23,8 +23,10 @@ public class DeleteProductUseCaseImpl implements DeleteProductUseCase {
         try {
             subProductDataProvider.deleteAll();
             productDataProvider.delete(id);
-        } catch (ProductDataProviderException | SubProductDataProviderException e) {
-            throw new DeleteProductUseCaseException(e.getMessage());
+        } catch (ProductDataProviderException e) {
+            throw new DeleteProductUseCaseException(e.getMessage(), e.getPhase().getHttpStatus());
+        } catch (SubProductDataProviderException e) {
+            throw new DeleteProductUseCaseException(e.getMessage(), e.getPhase().getHttpStatus());
         }
     }
 }

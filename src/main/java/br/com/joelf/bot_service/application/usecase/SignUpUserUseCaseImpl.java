@@ -8,6 +8,7 @@ import br.com.joelf.bot_service.domain.usecase.SignUpUserUseCase;
 import br.com.joelf.bot_service.domain.usecase.exceptions.SignUpUserUseCaseException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @AllArgsConstructor
@@ -20,7 +21,7 @@ public class SignUpUserUseCaseImpl implements SignUpUserUseCase {
     @Override
     public UserDtoOut execute(SignUpUserDto user) {
         if (!user.getOrganizationIdentifier().equals(Organization.CNPJ)) {
-            throw new SignUpUserUseCaseException("Invalid organization identifier");
+            throw new SignUpUserUseCaseException("Invalid organization identifier", HttpStatus.BAD_REQUEST);
         }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));

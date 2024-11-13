@@ -1,5 +1,6 @@
 package br.com.joelf.bot_service.infraestructure.dataprovider;
 
+import br.com.joelf.bot_service.application.commom.ExceptionPhase;
 import br.com.joelf.bot_service.application.dataprovider.SubProductDataProvider;
 import br.com.joelf.bot_service.application.dataprovider.exceptions.SubProductDataProviderException;
 import br.com.joelf.bot_service.domain.entities.Product;
@@ -13,7 +14,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class SubProductDataProviderImpl implements SubProductDataProvider {
@@ -43,7 +43,7 @@ public class SubProductDataProviderImpl implements SubProductDataProvider {
         try {
             pgSubProductRepository.deleteAllByProductId(productId);
         } catch (DataIntegrityViolationException e) {
-            throw new SubProductDataProviderException("SubProducts cannot be deleted");
+            throw new SubProductDataProviderException("SubProducts cannot be deleted", ExceptionPhase.DATA_INTEGRITY);
         }
     }
 
@@ -52,7 +52,7 @@ public class SubProductDataProviderImpl implements SubProductDataProvider {
         try {
             pgSubProductRepository.deleteAll();
         } catch (DataIntegrityViolationException e) {
-            throw new SubProductDataProviderException("SubProducts cannot be deleted");
+            throw new SubProductDataProviderException("SubProducts cannot be deleted", ExceptionPhase.DATA_INTEGRITY);
         }
     }
 }

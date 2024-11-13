@@ -1,5 +1,6 @@
 package br.com.joelf.bot_service.application.usecase;
 
+import br.com.joelf.bot_service.application.commom.ExceptionPhase;
 import br.com.joelf.bot_service.application.dataprovider.ProductDataProvider;
 import br.com.joelf.bot_service.application.dataprovider.SubProductDataProvider;
 import br.com.joelf.bot_service.application.dataprovider.exceptions.ProductDataProviderException;
@@ -53,7 +54,7 @@ public class UpdateProductUseCaseImplTest {
         UUID id = UUID.randomUUID();
         UpdateProductDto dto = new UpdateProductDto();
 
-        when(productDataProvider.update(id, dto)).thenThrow(new ProductDataProviderException("Error"));
+        when(productDataProvider.update(id, dto)).thenThrow(new ProductDataProviderException("Error", ExceptionPhase.DATA_INTEGRITY));
 
         Assertions.assertThrows(UpdateProductUseCaseException.class, () -> updateProductUseCase.execute(id, dto));
     }
