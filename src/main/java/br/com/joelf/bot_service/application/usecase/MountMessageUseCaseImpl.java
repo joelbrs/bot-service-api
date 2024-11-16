@@ -1,6 +1,5 @@
 package br.com.joelf.bot_service.application.usecase;
 
-import br.com.joelf.bot_service.application.dataprovider.ProductDataProvider;
 import br.com.joelf.bot_service.application.dataprovider.TemplateDataProvider;
 import br.com.joelf.bot_service.domain.dtos.product.ProductWithSubProductsDto;
 import br.com.joelf.bot_service.domain.entities.Product;
@@ -15,7 +14,10 @@ import com.twilio.twiml.messaging.Message;
 
 import lombok.AllArgsConstructor;
 
+import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 @AllArgsConstructor
 public class MountMessageUseCaseImpl implements MountMessageUseCase {
@@ -28,7 +30,7 @@ public class MountMessageUseCaseImpl implements MountMessageUseCase {
         Template template = templateDataProvider.findActiveTemplate();
         List<ProductWithSubProductsDto> products = findProductsByNameUseCase.execute(productName);
 
-        return mountXmlBodyResponse(template.getContent() + productsToString(products));
+        return mountXmlBodyResponse(productsToString(products) + template.getContent());
     }
 
     private String productsToString(List<ProductWithSubProductsDto> dto) {
@@ -36,13 +38,13 @@ public class MountMessageUseCaseImpl implements MountMessageUseCase {
         for (ProductWithSubProductsDto product : dto) {
             sb.append("\n*")
                     .append(product.getName())
-                    .append("*\n");
+                    .append("*\uD83D\uDC48 \n");
 
             for (SubProduct<Product> subProduct : product.getSubProducts()) {
-                sb.append("    - ");
-                sb.append(subProduct.getName())
+                sb.append("- ")
+                        .append(subProduct.getName())
                         .append(" - ")
-                        .append(subProduct.getPrice())
+                        .append(toBRL(subProduct.getPrice()))
                         .append("\n");
             }
         }
@@ -63,5 +65,10 @@ public class MountMessageUseCaseImpl implements MountMessageUseCase {
                 .build();
 
         return twiml.toXml();
+    }
+
+    private String toBRL(BigDecimal valor) {
+        NumberFormat moneyFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+        return moneyFormat.format(valor);
     }
 }

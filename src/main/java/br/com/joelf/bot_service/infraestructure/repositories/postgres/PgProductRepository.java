@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,9 +23,8 @@ public interface PgProductRepository extends JpaRepository<PgProduct, UUID> {
     Page<PgProduct> findAllPaged(Pageable pageable, String name, ProductStatus status);
 
     @Query("SELECT p FROM PgProduct p " +
-            "WHERE LOWER(p.name) LIKE CONCAT('%', LOWER(CAST(:name AS string)), '%') " +
+            "WHERE (LOWER(p.name) IN :names) " +
             "AND p.status = 'DISPONIVEL' " +
-            "ORDER BY p.name"
-    )
-    List<PgProduct> findByName(String name);
+            "ORDER BY p.name")
+    List<PgProduct> findByName(@Param("names") List<String> names);
 }
