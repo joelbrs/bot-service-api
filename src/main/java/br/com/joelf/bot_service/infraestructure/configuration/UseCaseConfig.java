@@ -134,4 +134,27 @@ public class UseCaseConfig {
     public LogoutUseCase logoutUseCase() {
         return new LogoutUseCaseImpl(cookieName);
     }
+
+    @Bean FindProductsByNameUseCase findProductsByNameUseCase(
+            ModelMapper modelMapper,
+            ProductDataProvider productDataProvider,
+            SubProductDataProvider subProductDataProvider
+    ) {
+        return new FindProductsByNameUseCaseImpl(
+                modelMapper,
+                productDataProvider,
+                subProductDataProvider
+        );
+    }
+
+    @Bean
+    public MountMessageUseCase mountMessageUseCase(
+            FindProductsByNameUseCase findProductsByNameUseCase,
+            TemplateDataProvider templateDataProvider
+    ) {
+        return new MountMessageUseCaseImpl(
+                templateDataProvider,
+                findProductsByNameUseCase
+        );
+    }
 }

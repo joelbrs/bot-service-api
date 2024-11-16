@@ -56,6 +56,12 @@ public class TemplateDataProviderImpl implements TemplateDataProvider {
     }
 
     @Override
+    public Template findActiveTemplate() {
+        PgTemplate pgTemplate = pgTemplateRepository.findActiveTemplate();
+        return modelMapper.map(pgTemplate, Template.class);
+    }
+
+    @Override
     public void delete(UUID id) {
         if (!pgTemplateRepository.existsById(id)) {
             throw new TemplateDataProviderException("Template not found, id: " + id, ExceptionPhase.DATA_INTEGRITY);

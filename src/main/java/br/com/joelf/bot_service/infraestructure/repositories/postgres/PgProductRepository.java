@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -19,4 +20,11 @@ public interface PgProductRepository extends JpaRepository<PgProduct, UUID> {
             "ORDER BY p.name"
     )
     Page<PgProduct> findAllPaged(Pageable pageable, String name, ProductStatus status);
+
+    @Query("SELECT p FROM PgProduct p " +
+            "WHERE LOWER(p.name) LIKE CONCAT('%', LOWER(CAST(:name AS string)), '%') " +
+            "AND p.status = 'DISPONIVEL' " +
+            "ORDER BY p.name"
+    )
+    List<PgProduct> findByName(String name);
 }
