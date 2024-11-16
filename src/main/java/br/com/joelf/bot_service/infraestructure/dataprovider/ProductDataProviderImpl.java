@@ -17,6 +17,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -59,7 +60,14 @@ public class ProductDataProviderImpl implements ProductDataProvider {
 
     @Override
     public List<Product> findByName(String name) {
-        List<PgProduct> products = pgProductRepository.findByName(name);
+        String nameWithoutSpecialCharacters = name.replaceAll("[^a-zA-Z0-9\\s]", "");
+
+        List<String> names = Arrays.stream(nameWithoutSpecialCharacters.split("\\s+"))
+                .map(String::toLowerCase)
+                .distinct()
+                .toList();
+
+        List<PgProduct> products = pgProductRepository.findByName(names);
         return products.stream()
                 .map(pgProduct -> modelMapper.map(pgProduct, Product.class))
                 .toList();
