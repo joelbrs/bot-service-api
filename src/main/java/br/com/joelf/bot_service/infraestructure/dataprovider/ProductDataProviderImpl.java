@@ -62,10 +62,10 @@ public class ProductDataProviderImpl implements ProductDataProvider {
     public List<Product> findByName(String name) {
         String nameWithoutSpecialCharacters = name.replaceAll("[^a-zA-Z0-9\\s]", "");
 
-        List<String> names = Arrays.stream(nameWithoutSpecialCharacters.split("\\s+"))
+        String[] names = Arrays.stream(nameWithoutSpecialCharacters.split("\\s+"))
                 .map(String::toLowerCase)
                 .distinct()
-                .toList();
+                .toArray(String[]::new);
 
         List<PgProduct> products = pgProductRepository.findByName(names);
         return products.stream()

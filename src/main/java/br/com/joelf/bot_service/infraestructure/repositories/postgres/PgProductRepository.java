@@ -22,9 +22,12 @@ public interface PgProductRepository extends JpaRepository<PgProduct, UUID> {
     )
     Page<PgProduct> findAllPaged(Pageable pageable, String name, ProductStatus status);
 
-    @Query("SELECT p FROM PgProduct p " +
-            "WHERE (LOWER(p.name) IN :names) " +
-            "AND p.status = 'DISPONIVEL' " +
-            "ORDER BY p.name")
-    List<PgProduct> findByName(@Param("names") List<String> names);
+    @Query(value = "SELECT * FROM tb_product p " +
+            "WHERE p.status = 'DISPONIVEL' " +
+            "AND EXISTS ( " +
+            "   SELECT 1 FROM unnest(:names) AS name " +
+            "   WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', name, '%')) " +
+            ") " +
+            "ORDER BY p.name", nativeQuery = true)
+    List<PgProduct> findByName(String[] names);
 }
