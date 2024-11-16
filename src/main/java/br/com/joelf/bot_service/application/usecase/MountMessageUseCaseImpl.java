@@ -35,6 +35,11 @@ public class MountMessageUseCaseImpl implements MountMessageUseCase {
 
     private String productsToString(List<ProductWithSubProductsDto> dto) {
         StringBuilder sb = new StringBuilder();
+
+        if (!dto.isEmpty()) {
+            sb.append("\n__________________________________________");
+        }
+
         for (ProductWithSubProductsDto product : dto) {
             sb.append("\n*")
                     .append(product.getName())
