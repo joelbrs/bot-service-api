@@ -1,5 +1,6 @@
 package br.com.joelf.bot_service.application.usecase;
 
+import br.com.joelf.bot_service.application.commom.ExceptionPhase;
 import br.com.joelf.bot_service.application.dataprovider.TemplateDataProvider;
 import br.com.joelf.bot_service.application.dataprovider.exceptions.TemplateDataProviderException;
 import br.com.joelf.bot_service.domain.dtos.template.UpdateTemplateDto;
@@ -40,7 +41,7 @@ public class UpdateTemplateUseCaseImplTest {
         UUID id = UUID.randomUUID();
         UpdateTemplateDto dto = new UpdateTemplateDto();
 
-        when(templateDataProvider.update(id, dto)).thenThrow(new TemplateDataProviderException("Error"));
+        when(templateDataProvider.update(id, dto)).thenThrow(new TemplateDataProviderException("Error", ExceptionPhase.ENTITY_NOT_FOUND));
 
         Assertions.assertThrows(UpdateTemplateUseCaseException.class, () -> updateTemplateUseCase.execute(id, dto));
     }

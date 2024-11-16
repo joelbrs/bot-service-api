@@ -17,3 +17,5 @@ security:
     organization:
         name: ${ORGANIZATION_NAME:BotService LTDA}
         cnpj: ${ORGANIZATION_CNPJ:12345678901234}
+    cors:
+        allowed-origins: ${FRONT_URL:http://localhost:5173}
