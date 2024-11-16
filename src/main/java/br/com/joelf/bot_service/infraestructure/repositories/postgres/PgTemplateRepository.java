@@ -20,8 +20,8 @@ public interface PgTemplateRepository extends JpaRepository<PgTemplate, UUID> {
     )
     Page<PgTemplate> findAllPaged(Pageable pageable, String name);
 
-    @Query("SELECT CASE WHEN COUNT(t) > 0 THEN TRUE ELSE FALSE END FROM PgTemplate t WHERE t.status = :status")
-    Boolean existsTemplateByStatus(TemplateStatus status);
+    @Query("SELECT t FROM PgTemplate t WHERE t.status = 'ATIVO'")
+    PgTemplate findActiveTemplate();
 
     @Modifying
     @Query("UPDATE PgTemplate t SET t.status = 'INATIVO' WHERE t.status = 'ATIVO'")

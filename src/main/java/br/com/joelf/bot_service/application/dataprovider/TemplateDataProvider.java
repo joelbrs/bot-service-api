@@ -13,6 +13,7 @@ public interface TemplateDataProvider {
     Template update(UUID id, UpdateTemplateDto template);
     Template findById(UUID id);
     Page<Template> findAll(Pageable pageable, String name);
+    Template findActiveTemplate();
     void delete(UUID id);
     void updateActiveToInactive();
 }
