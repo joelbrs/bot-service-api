@@ -17,6 +17,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -54,6 +55,14 @@ public class ProductDataProviderImpl implements ProductDataProvider {
         PgProduct pgProduct = pgProductRepository.findById(id)
                 .orElseThrow(() -> new ProductDataProviderException("Product not found, id: " + id, ExceptionPhase.ENTITY_NOT_FOUND));
         return modelMapper.map(pgProduct, Product.class);
+    }
+
+    @Override
+    public List<Product> findByName(String name) {
+        List<PgProduct> products = pgProductRepository.findByName(name);
+        return products.stream()
+                .map(pgProduct -> modelMapper.map(pgProduct, Product.class))
+                .toList();
     }
 
     @Override
