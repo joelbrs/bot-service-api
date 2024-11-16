@@ -12,7 +12,7 @@ public class TwilioWebhook {
 
     private final MountMessageUseCase mountMessageUseCase;
 
-    @PostMapping("/whatsapp")
+    @PostMapping(value = "/whatsapp", produces = "text/xml")
     public ResponseEntity<String> mountMessage(@RequestParam("Body") String productName) {
         return ResponseEntity.ok(mountMessageUseCase.execute(productName));
     }
