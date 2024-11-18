@@ -8,6 +8,7 @@ import br.com.joelf.bot_service.domain.entities.Template;
 import br.com.joelf.bot_service.domain.usecase.FindProductsByNameUseCase;
 import br.com.joelf.bot_service.domain.usecase.MountMessageUseCase;
 
+import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
@@ -21,6 +22,7 @@ public class MountMessageUseCaseImpl implements MountMessageUseCase {
     private final TemplateDataProvider templateDataProvider;
     private final FindProductsByNameUseCase findProductsByNameUseCase;
 
+    @Transactional(readOnly = true)
     @Override
     public String execute(String productName) {
         Template template = templateDataProvider.findActiveTemplate();
