@@ -27,10 +27,11 @@ public class MountMessageUseCaseImpl implements MountMessageUseCase {
 
     @Override
     public String execute(String productName) {
-        Template template = templateDataProvider.findActiveTemplate();
-        List<ProductWithSubProductsDto> products = findProductsByNameUseCase.execute(productName);
-
-        return mountXmlBodyResponse(productsToString(products) + template.getContent());
+        return "Ok";
+//        Template template = templateDataProvider.findActiveTemplate();
+//        List<ProductWithSubProductsDto> products = findProductsByNameUseCase.execute(productName);
+//
+//        return mountXmlBodyResponse(productsToString(products) + template.getContent());
     }
 
     private String productsToString(List<ProductWithSubProductsDto> dto) {
