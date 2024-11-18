@@ -13,7 +13,7 @@ public class MetaWebhook {
     private final MountMessageUseCase mountMessageUseCase;
 
     @GetMapping(value = "/whatsapp", produces = "text/xml")
-    public ResponseEntity<String> mountMessage(@RequestParam("Body") String productName) {
+    public ResponseEntity<String> mountMessage(@RequestParam(value = "Body", required = false) String productName) {
         return ResponseEntity.ok(mountMessageUseCase.execute(productName));
     }
 }
