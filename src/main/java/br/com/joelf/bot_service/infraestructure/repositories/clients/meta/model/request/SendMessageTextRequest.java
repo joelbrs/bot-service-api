@@ -8,5 +8,7 @@ public class SendMessageTextRequest {
 
     @JsonProperty("preview_url")
     private Boolean previewUrl;
+
+    @JsonProperty("body")
     private String body;
 }

@@ -13,8 +13,11 @@ public class SendMessageRequest {
     private String recipientType;
 
     @JsonProperty("to")
-    private String recipientPhoneNumber;
+    private String to;
 
+    @JsonProperty("type")
     private String type;
+
+    @JsonProperty("text")
     private SendMessageTextRequest text;
 }

@@ -40,7 +40,7 @@ public class SendMessageUseCaseImpl implements SendMessageUseCase {
         return SendMessageRequest.builder()
                 .messagingProduct(messagingProduct)
                 .recipientType(recipientType)
-                .recipientPhoneNumber(recipientPhoneNumber)
+                .to(recipientPhoneNumber)
                 .text(text)
                 .type(type)
                 .build();
