@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/webhook")
-public class TwilioWebhook {
+public class MetaWebhook {
 
     private final MountMessageUseCase mountMessageUseCase;
 
-    @PostMapping(value = "/whatsapp", produces = "text/xml")
+    @GetMapping(value = "/whatsapp", produces = "text/xml")
     public ResponseEntity<String> mountMessage(@RequestParam("Body") String productName) {
         return ResponseEntity.ok(mountMessageUseCase.execute(productName));
     }
