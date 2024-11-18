@@ -9,8 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 @AllArgsConstructor
 @RestController
 @RequestMapping("/webhook")
@@ -25,10 +23,10 @@ public class MetaWebhook {
     }
 
     @PostMapping("/whatsapp")
-    public ResponseEntity<Void> mountMessage(@RequestBody Map<String, Object> body) {
+    public ResponseEntity<Void> mountMessage(@RequestBody Entrypoint body) {
         LOGGER.info("Received message: {}", body);
-//        Message message = body.getEntry().getFirst().getChanges().getFirst().getMessages().getFirst();
-//        sendMessageUseCase.execute(message.getText().getBody(), message.getFrom());
+        Message message = body.getEntry().getFirst().getChanges().getFirst().getValue().getMessages().getFirst();
+        sendMessageUseCase.execute(message.getText().getBody(), message.getFrom());
         return ResponseEntity.ok().build();
     }
 }
