@@ -8,10 +8,7 @@ import br.com.joelf.bot_service.domain.entities.Template;
 import br.com.joelf.bot_service.domain.usecase.FindProductsByNameUseCase;
 import br.com.joelf.bot_service.domain.usecase.MountMessageUseCase;
 
-import com.twilio.twiml.MessagingResponse;
-import com.twilio.twiml.messaging.Body;
-import com.twilio.twiml.messaging.Message;
-
+import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
@@ -25,12 +22,13 @@ public class MountMessageUseCaseImpl implements MountMessageUseCase {
     private final TemplateDataProvider templateDataProvider;
     private final FindProductsByNameUseCase findProductsByNameUseCase;
 
+    @Transactional(readOnly = true)
     @Override
     public String execute(String productName) {
         Template template = templateDataProvider.findActiveTemplate();
         List<ProductWithSubProductsDto> products = findProductsByNameUseCase.execute(productName);
 
-        return mountXmlBodyResponse(productsToString(products) + template.getContent());
+        return productsToString(products) + template.getContent();
     }
 
     private String productsToString(List<ProductWithSubProductsDto> dto) {
@@ -54,22 +52,6 @@ public class MountMessageUseCaseImpl implements MountMessageUseCase {
             sb.append("__________________________________________\n");
         }
         return sb.toString();
-    }
-
-    private String mountXmlBodyResponse(String content) {
-        Body body = new Body
-                .Builder(content)
-                .build();
-        Message sms = new Message
-                .Builder()
-                .body(body)
-                .build();
-        MessagingResponse twiml = new MessagingResponse
-                .Builder()
-                .message(sms)
-                .build();
-
-        return twiml.toXml();
     }
 
     private String toBRL(BigDecimal valor) {

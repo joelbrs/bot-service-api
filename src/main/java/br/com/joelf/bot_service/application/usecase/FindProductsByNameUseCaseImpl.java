@@ -7,6 +7,7 @@ import br.com.joelf.bot_service.domain.entities.Product;
 import br.com.joelf.bot_service.domain.usecase.FindProductsByNameUseCase;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class FindProductsByNameUseCaseImpl implements FindProductsByNameUseCase 
     private final ProductDataProvider productDataProvider;
     private final SubProductDataProvider subProductDataProvider;
 
+    @Transactional(readOnly = true)
     @Override
     public List<ProductWithSubProductsDto> execute(String name) {
         List<Product> products = productDataProvider.findByName(name);

@@ -7,6 +7,7 @@ import br.com.joelf.bot_service.application.dataprovider.UserDataProvider;
 import br.com.joelf.bot_service.application.usecase.*;
 import br.com.joelf.bot_service.domain.usecase.*;
 import br.com.joelf.bot_service.infraestructure.authentication.JwtService;
+import br.com.joelf.bot_service.infraestructure.repositories.clients.meta.MetaFeignClient;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -155,6 +156,18 @@ public class UseCaseConfig {
         return new MountMessageUseCaseImpl(
                 templateDataProvider,
                 findProductsByNameUseCase
+        );
+    }
+
+    @Bean
+    public SendMessageUseCase sendMessageUseCase(
+            @Value("${meta.version}") String version,
+            @Value("${meta.whatsapp.number-identifier}") String phoneNumberId,
+            MetaFeignClient metaFeignClient,
+            MountMessageUseCase mountMessageUseCase
+    ) {
+        return new SendMessageUseCaseImpl(
+                version, phoneNumberId, metaFeignClient, mountMessageUseCase
         );
     }
 }

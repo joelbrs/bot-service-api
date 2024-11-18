@@ -34,6 +34,8 @@ public class SignInUserUseCaseImpl implements SignInUserUseCase {
         cookie.setHttpOnly(Boolean.TRUE);
         cookie.setPath("/");
         cookie.setMaxAge(token.getExpirationTime().intValue());
+        cookie.setSecure(Boolean.TRUE);
+        cookie.setAttribute("SameSite", "None");
         return cookie;
     }
 }

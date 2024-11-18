@@ -19,3 +19,10 @@ security:
         cnpj: ${ORGANIZATION_CNPJ:12345678901234}
     cors:
         allowed-origins: ${FRONT_URL:http://localhost:5173}
+
+meta:
+    url: ${META_URL:http://localhost:8080}
+    version: ${META_VERSION:v21.0}
+    whatsapp:
+        access-token: ${WHATSAPP_ACCESS_TOKEN:access-token}
+        number-identifier: ${WHATSAPP_NUMBER_IDENTIFIER:5511999999999}
