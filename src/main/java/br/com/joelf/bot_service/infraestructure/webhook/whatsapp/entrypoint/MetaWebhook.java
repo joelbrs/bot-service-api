@@ -14,6 +14,11 @@ public class MetaWebhook {
 
     private final SendMessageUseCase sendMessageUseCase;
 
+    @GetMapping("/whatsapp")
+    public ResponseEntity<String> mountMessage(@RequestParam("hub.challenge") String challenge) {
+        return ResponseEntity.ok(challenge);
+    }
+
     @PostMapping("/whatsapp")
     public ResponseEntity<Void> mountMessage(@RequestBody Entrypoint body) {
         Message message = body.getEntry().getFirst().getChanges().getFirst().getMessages().getFirst();
