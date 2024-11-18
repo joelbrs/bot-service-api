@@ -13,7 +13,7 @@ public class MetaWebhook {
     private final MountMessageUseCase mountMessageUseCase;
 
     @GetMapping("/whatsapp")
-    public ResponseEntity<String> mountMessage() {
-        return ResponseEntity.ok(mountMessageUseCase.execute(""));
+    public ResponseEntity<String> mountMessage(@RequestParam("hub.challenge") String challenge) {
+        return ResponseEntity.ok(mountMessageUseCase.execute(challenge));
     }
 }

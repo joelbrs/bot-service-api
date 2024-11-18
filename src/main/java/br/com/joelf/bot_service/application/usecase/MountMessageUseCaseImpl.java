@@ -27,7 +27,7 @@ public class MountMessageUseCaseImpl implements MountMessageUseCase {
 
     @Override
     public String execute(String productName) {
-        return "Ok";
+        return productName;
 //        Template template = templateDataProvider.findActiveTemplate();
 //        List<ProductWithSubProductsDto> products = findProductsByNameUseCase.execute(productName);
 //
